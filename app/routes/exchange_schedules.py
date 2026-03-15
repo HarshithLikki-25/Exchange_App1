@@ -17,3 +17,23 @@ def schedule_exchange(
 ):
     """Create a schedule/pickup for an accepted exchange."""
     return create_exchange_schedule(db, schedule_data, current_user.id)
+
+@router.get("", response_model=list[ExchangeScheduleOut])
+def get_user_schedules(
+    db: Session = Depends(get_db),
+    current_user: User = Depends(get_current_user)
+):
+    """Get all scheduled exchanges for the current user."""
+    from app.services.exchange_schedule_service import get_schedules_for_user
+    return get_schedules_for_user(db, current_user.id)
+
+@router.patch("/{schedule_id}/status", response_model=ExchangeScheduleOut)
+def update_status(
+    schedule_id: int,
+    status: str,
+    db: Session = Depends(get_db),
+    current_user: User = Depends(get_current_user)
+):
+    """Accept or reject a proposed schedule."""
+    from app.services.exchange_schedule_service import update_schedule_status
+    return update_schedule_status(db, schedule_id, current_user.id, status)

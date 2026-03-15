@@ -25,11 +25,14 @@ def create_product(db: Session, product_data: ProductCreate, owner_id: int) -> P
     return product
 
 
+from app.models.user import User
+
 def get_all_products(
     db: Session,
     search: Optional[str] = None,
     category: Optional[str] = None,
     condition: Optional[str] = None,
+    location: Optional[str] = None,
     page: int = 1,
     limit: int = 10,
     latitude: float = None,
@@ -60,6 +63,10 @@ def get_all_products(
     # --- Condition filter ---
     if condition:
         query = query.filter(Product.condition.ilike(f"%{condition}%"))
+        
+    # --- Location Text filter ---
+    if location:
+        query = query.join(User).filter(User.location.ilike(f"%{location}%"))
         
     # Bounding Box Location Filtering
     if latitude is not None and longitude is not None and radius:

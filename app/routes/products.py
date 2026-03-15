@@ -49,6 +49,7 @@ def list_products(
     latitude: Optional[float] = Query(None, description="User's latitude for distance filtering"),
     longitude: Optional[float] = Query(None, description="User's longitude for distance filtering"),
     radius: Optional[float] = Query(None, description="Search radius in kilometers"),
+    location: str = Query(None, description="Filter by owner's location (e.g. city or campus)"),
     page: int = Query(1, ge=1, description="Page number (starts at 1)"),
     limit: int = Query(10, ge=1, le=50, description="Results per page (max 50)"),
     sort: Literal["newest", "oldest"] = Query("newest", description="Sort by creation time"),
@@ -59,7 +60,7 @@ def list_products(
     Supports search, category/condition filtering, pagination, and sorting.
     """
     return get_all_products(db, search=search, category=category, condition=condition,
-                            page=page, limit=limit, sort=sort)
+                            location=location, page=page, limit=limit, sort=sort)
 
 
 @router.get("/{product_id}", response_model=ProductOut)

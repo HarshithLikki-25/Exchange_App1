@@ -91,15 +91,15 @@ export default function AddProduct() {
     <motion.div 
       initial={{ opacity: 0, y: 20 }}
       animate={{ opacity: 1, y: 0 }}
-      className="max-w-2xl mx-auto glass-card rounded-2xl p-6 sm:p-10"
+      className="max-w-2xl mx-auto glass-card rounded-2xl p-6 sm:p-10 my-10"
     >
       <div className="mb-8 text-center">
-        <h1 className="text-3xl font-extrabold text-gray-900 tracking-tight">Post an Item</h1>
-        <p className="text-gray-500 mt-2">List an item for sale or exchange on campus.</p>
+        <h1 className="text-3xl font-extrabold text-white tracking-tight">Post an Item</h1>
+        <p className="text-white/60 mt-2 font-medium">List an item for sale or exchange on campus.</p>
       </div>
 
       {error && (
-        <div className="bg-red-50 text-red-600 p-4 rounded-xl mb-6 text-sm font-medium border border-red-100">
+        <div className="bg-red-500/10 text-red-400 p-4 rounded-xl mb-6 text-sm font-bold border border-red-500/20 shadow-inner">
           {error}
         </div>
       )}
@@ -109,13 +109,13 @@ export default function AddProduct() {
         {/* Basic Info */}
         <div className="space-y-4">
           <div>
-            <label className="block text-sm font-medium text-gray-700 mb-1">Title *</label>
+            <label className="block text-sm font-bold text-white/70 mb-2">Title *</label>
             <input
               type="text"
               name="title"
               value={formData.title}
               onChange={handleChange}
-              className="w-full p-3 bg-gray-50 border border-gray-200 rounded-xl focus:ring-2 focus:ring-blue-500/20 focus:border-blue-500 outline-none transition-all"
+              className="w-full p-3 bg-black/20 border border-purple-300/30 rounded-xl focus:ring-2 focus:ring-purple-400 focus:border-purple-400 outline-none text-white transition-all placeholder-white/30"
               placeholder="e.g., Fundamentals of Physics 10th Ed."
               required
             />
@@ -123,61 +123,64 @@ export default function AddProduct() {
 
           <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
             <div>
-              <label className="block text-sm font-medium text-gray-700 mb-1">Category</label>
+              <label className="block text-sm font-bold text-white/70 mb-2">Category</label>
               <select
                 name="category"
                 value={formData.category}
                 onChange={handleChange}
-                className="w-full p-3 bg-gray-50 border border-gray-200 rounded-xl focus:ring-2 focus:ring-blue-500/20 focus:border-blue-500 outline-none transition-all capitalize"
+                className="w-full p-3 bg-black/20 border border-blue-300/30 rounded-xl focus:ring-2 focus:ring-blue-400 focus:border-blue-400 outline-none text-white transition-all capitalize"
               >
-                <option value="">Select category...</option>
+                <option value="" className="text-gray-900">Select category...</option>
                 {categories.map(cat => (
-                  <option key={cat} value={cat}>{cat}</option>
+                  <option key={cat} value={cat} className="text-gray-900">{cat}</option>
                 ))}
               </select>
             </div>
             
             <div>
-              <label className="block text-sm font-medium text-gray-700 mb-1">Condition</label>
+              <label className="block text-sm font-bold text-white/70 mb-2">Condition</label>
               <select
                 name="condition"
                 value={formData.condition}
                 onChange={handleChange}
-                className="w-full p-3 bg-gray-50 border border-gray-200 rounded-xl focus:ring-2 focus:ring-blue-500/20 focus:border-blue-500 outline-none transition-all"
+                className="w-full p-3 bg-black/20 border border-green-300/30 rounded-xl focus:ring-2 focus:ring-green-400 focus:border-green-400 outline-none text-white transition-all"
               >
-                <option value="">Select condition...</option>
+                <option value="" className="text-gray-900">Select condition...</option>
                 {conditions.map(cond => (
-                  <option key={cond} value={cond}>{cond}</option>
+                  <option key={cond} value={cond} className="text-gray-900">{cond}</option>
                 ))}
               </select>
             </div>
           </div>
 
           <div>
-            <label className="block text-sm font-medium text-gray-700 mb-1">Description</label>
+            <label className="block text-sm font-bold text-white/70 mb-2">Description</label>
             <textarea
               name="description"
               value={formData.description}
               onChange={handleChange}
               rows="4"
-              className="w-full p-3 bg-gray-50 border border-gray-200 rounded-xl focus:ring-2 focus:ring-blue-500/20 focus:border-blue-500 outline-none transition-all resize-none"
+              className="w-full p-3 bg-black/20 border border-purple-300/30 rounded-xl focus:ring-2 focus:ring-purple-400 focus:border-purple-400 outline-none text-white transition-all resize-none placeholder-white/30"
               placeholder="Describe the item, any flaws, and what you might want in exchange..."
             ></textarea>
           </div>
 
-          <div className="flex items-center justify-between p-4 bg-blue-50/50 border border-blue-100 rounded-xl">
-            <div>
-              <h4 className="text-sm font-bold text-gray-800">Item Location</h4>
-              <p className="text-xs text-gray-500 mt-1">Pin your location so nearby students can find your item.</p>
+          <div className="flex flex-col sm:flex-row items-center justify-between p-4 bg-white/5 border border-white/10 rounded-xl gap-4">
+            <div className="text-center sm:text-left">
+              <h4 className="text-sm font-bold text-white">Item Location</h4>
+              <p className="text-xs text-white/50 mt-1">Pin your location so nearby students can find your item.</p>
               {formData.latitude && (
-                <p className="text-xs font-semibold text-green-600 mt-1">Location Pinned ✓</p>
+                <p className="text-xs font-bold text-green-400 mt-2 flex items-center justify-center sm:justify-start">
+                  <span className="w-2 h-2 bg-green-400 rounded-full shadow-[0_0_8px_rgba(74,222,128,0.8)] mr-2"></span>
+                  Location Pinned ✓
+                </p>
               )}
             </div>
             <button 
               type="button" 
               onClick={captureLocation}
               disabled={locationLoading}
-              className="px-4 py-2 bg-white text-blue-600 text-sm font-bold rounded-lg border border-blue-200 shadow-sm hover:shadow hover:bg-blue-50 flex items-center transition-all disabled:opacity-50"
+              className="px-5 py-2.5 bg-white/10 text-blue-300 text-sm font-bold rounded-xl border border-blue-400/30 hover:bg-white/20 hover:border-blue-400/50 flex items-center transition-all disabled:opacity-50 shrink-0 shadow-lg whitespace-nowrap"
             >
               {locationLoading ? <Loader2 size={16} className="animate-spin mr-2" /> : <MapPin size={16} className="mr-2" />}
               {formData.latitude ? 'Update Pin' : 'Pin My Location'}
@@ -187,24 +190,26 @@ export default function AddProduct() {
 
         {/* Image Upload Area */}
         <div className="mt-8">
-          <label className="block text-sm font-medium text-gray-700 mb-2">Product Image (Optional but recommended)</label>
+          <label className="block text-sm font-bold text-white/70 mb-3">Product Image (Optional but recommended)</label>
           <div className="flex items-center justify-center w-full">
-            <label className={`flex flex-col items-center justify-center w-full h-64 border-2 border-dashed rounded-2xl cursor-pointer transition-colors ${imagePreview ? 'border-blue-500 bg-blue-50/50' : 'border-gray-300 bg-gray-50 hover:bg-gray-100'}`}>
+            <label className={`flex flex-col items-center justify-center w-full h-64 border-2 border-dashed rounded-2xl cursor-pointer transition-all ${imagePreview ? 'border-blue-400 bg-white/5' : 'border-white/20 bg-black/20 hover:bg-white/5 hover:border-white/40'}`}>
               
               {imagePreview ? (
-                <div className="w-full h-full p-2 relative">
-                  <img src={imagePreview} className="w-full h-full object-contain rounded-xl" alt="Preview" />
-                  <div className="absolute inset-0 bg-black/40 flex items-center justify-center opacity-0 hover:opacity-100 transition-opacity rounded-xl">
-                    <p className="text-white font-medium flex items-center bg-black/50 px-4 py-2 rounded-full"><ImageIcon size={18} className="mr-2"/> Change Image</p>
+                <div className="w-full h-full p-2 relative group">
+                  <img src={imagePreview} className="w-full h-full object-contain rounded-xl drop-shadow-lg" alt="Preview" />
+                  <div className="absolute inset-0 bg-black/60 flex items-center justify-center opacity-0 group-hover:opacity-100 transition-opacity rounded-xl backdrop-blur-sm">
+                    <p className="text-white font-bold flex items-center bg-white/20 px-5 py-2.5 rounded-full border border-white/30 shadow-xl">
+                      <ImageIcon size={18} className="mr-2"/> Change Image
+                    </p>
                   </div>
                 </div>
               ) : (
                 <div className="flex flex-col items-center justify-center pt-5 pb-6">
-                  <div className="p-4 bg-blue-50 text-blue-500 rounded-full mb-3 shadow-inner">
+                  <div className="p-4 bg-white/5 text-purple-400 rounded-full mb-3 shadow-inner border border-white/10">
                     <UploadCloud size={32} />
                   </div>
-                  <p className="mb-2 text-sm text-gray-500"><span className="font-semibold text-blue-600">Click to upload</span> or drag and drop</p>
-                  <p className="text-xs text-gray-400">PNG, JPG or WEBP (MAX. 5MB)</p>
+                  <p className="mb-2 text-sm text-white/60"><span className="font-bold text-blue-400">Click to upload</span> or drag and drop</p>
+                  <p className="text-xs text-white/30 font-medium">PNG, JPG or WEBP (MAX. 5MB)</p>
                 </div>
               )}
               
@@ -213,11 +218,11 @@ export default function AddProduct() {
           </div>
         </div>
 
-        <div className="pt-4 border-t border-gray-100">
+        <div className="pt-6 border-t border-white/10 mt-6">
           <button
             type="submit"
             disabled={loading}
-            className="w-full py-4 text-white bg-gradient-to-r from-blue-600 to-purple-600 rounded-xl font-bold shadow-lg hover:shadow-xl transform hover:-translate-y-0.5 transition-all focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-blue-500 disabled:opacity-50"
+            className="w-full py-4 text-white bg-gradient-to-r from-blue-600 to-purple-600 rounded-xl font-bold shadow-[0_0_20px_rgba(37,99,235,0.3)] hover:shadow-[0_0_25px_rgba(168,85,247,0.5)] transform hover:-translate-y-1 transition-all focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-offset-slate-900 focus:ring-purple-500 disabled:opacity-50 text-lg uppercase tracking-wide"
           >
             {loading ? 'Posting Item...' : 'Publish Listing'}
           </button>

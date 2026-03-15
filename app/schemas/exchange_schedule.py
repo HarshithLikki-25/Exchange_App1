@@ -8,6 +8,8 @@ class ExchangeScheduleBase(BaseModel):
     location: str
     date: date
     time_slot: str
+    description: Optional[str] = None
+    status: Optional[str] = "pending"
 
 
 class ExchangeScheduleCreate(ExchangeScheduleBase):

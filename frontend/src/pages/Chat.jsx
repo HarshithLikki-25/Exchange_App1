@@ -1,164 +1,282 @@
 import React, { useState, useEffect, useRef } from 'react';
-import api from '../services/api';
+import { motion } from 'framer-motion';
 import { useAuth } from '../context/AuthContext';
-import { Loader2, Send, User } from 'lucide-react';
+import api from '../services/api';
+import { Send, User as UserIcon, MessageSquare, Loader2, ArrowLeft } from 'lucide-react';
 import { Helmet } from 'react-helmet-async';
+import { useLocation, useNavigate } from 'react-router-dom';
 
 export default function Chat() {
   const { user } = useAuth();
+  const location = useLocation();
+  const navigate = useNavigate();
+  
   const [conversations, setConversations] = useState([]);
   const [activeConvo, setActiveConvo] = useState(null);
   const [messages, setMessages] = useState([]);
   const [newMessage, setNewMessage] = useState('');
-  const [loadingList, setLoadingList] = useState(true);
-  const [loadingChat, setLoadingChat] = useState(false);
+  const [loadingConvos, setLoadingConvos] = useState(true);
+  const [loadingMessages, setLoadingMessages] = useState(false);
+  const [sending, setSending] = useState(false);
+  
   const messagesEndRef = useRef(null);
 
+  // Initialize from location state if we navigated here to start a new chat
   useEffect(() => {
-    const fetchConvos = async () => {
-      try {
-        const res = await api.get('/messages/conversations');
-        setConversations(res.data);
-      } catch (err) {
-        console.error(err);
-      } finally {
-        setLoadingList(false);
+    if (location.state?.recipientId) {
+      const recipientId = location.state.recipientId;
+      const recipientName = location.state.recipientName || 'User';
+      
+      // Check if we already have a convo with this person
+      const existing = conversations.find(c => c.user1_id === recipientId || c.user2_id === recipientId);
+      
+      if (existing) {
+        handleSelectConvo(existing);
+      } else {
+        // Create a temporary active convo for the UI
+        setActiveConvo({
+          isNew: true,
+          recipientId,
+          otherUser: { name: recipientName }
+        });
+        setMessages([]);
       }
-    };
-    if (user) fetchConvos();
-  }, [user]);
-
-  useEffect(() => {
-    if (activeConvo) {
-      const fetchMsgs = async () => {
-        setLoadingChat(true);
-        try {
-          const res = await api.get(`/messages/${activeConvo.id}`);
-          setMessages(res.data);
-        } catch (err) {
-          console.error(err);
-        } finally {
-          setLoadingChat(false);
-        }
-      };
-      fetchMsgs();
-      // Polling could be implemented here with setInterval
+      
+      // Clear history state to avoid loops
+      window.history.replaceState({}, document.title);
     }
-  }, [activeConvo]);
+  }, [location.state, conversations]);
 
+  // Load conversations
   useEffect(() => {
-    messagesEndRef.current?.scrollIntoView({ behavior: 'smooth' });
-  }, [messages]);
+    fetchConversations();
+  }, []);
 
-  const sendMessage = async (e) => {
-    e.preventDefault();
-    if (!newMessage.trim() || !activeConvo) return;
+  const fetchConversations = async () => {
     try {
-      const res = await api.post('/messages', {
-        message_text: newMessage,
-        conversation_id: activeConvo.id
-      });
-      setMessages([...messages, res.data]);
-      setNewMessage('');
+      const res = await api.get('/messages/conversations');
+      setConversations(res.data);
+      if (res.data.length > 0 && !activeConvo && !location.state?.recipientId) {
+        handleSelectConvo(res.data[0]);
+      }
     } catch (err) {
-      console.error(err);
+      console.error("Failed to load conversations", err);
+    } finally {
+      setLoadingConvos(false);
     }
   };
 
-  const getOtherUserId = (convo) => convo.user1_id === user?.id ? convo.user2_id : convo.user1_id;
+  const handleSelectConvo = async (convo) => {
+    setActiveConvo(convo);
+    setLoadingMessages(true);
+    setMessages([]);
+    try {
+      const res = await api.get(`/messages/${convo.id}`);
+      setMessages(res.data);
+    } catch (err) {
+      console.error("Failed to load messages", err);
+    } finally {
+      setLoadingMessages(false);
+      scrollToBottom();
+    }
+  };
+
+  const scrollToBottom = () => {
+    messagesEndRef.current?.scrollIntoView({ behavior: "smooth" });
+  };
+
+  useEffect(() => {
+    scrollToBottom();
+  }, [messages]);
+
+  const handleSendMessage = async (e) => {
+    e.preventDefault();
+    if (!newMessage.trim()) return;
+
+    setSending(true);
+    try {
+      const payload = { message_text: newMessage };
+      
+      if (activeConvo.isNew) {
+        payload.recipient_id = activeConvo.recipientId;
+      } else {
+        payload.conversation_id = activeConvo.id;
+      }
+      
+      const res = await api.post('/messages', payload);
+      
+      setMessages(prev => [...prev, res.data]);
+      setNewMessage('');
+      
+      // If it was a new conversation, refresh the list
+      if (activeConvo.isNew) {
+        fetchConversations();
+        // The fetchConversations will update the activeConvo from the server
+      } else {
+        // Update last message in the list
+        setConversations(prev => prev.map(c => 
+          c.id === activeConvo.id ? { ...c, last_message: res.data } : c
+        ));
+      }
+    } catch (err) {
+      console.error("Failed to send message", err);
+    } finally {
+      setSending(false);
+    }
+  };
+
+  const getOtherUser = (convo) => {
+    if (convo.isNew) return convo.otherUser;
+    return convo.user1_id === user.id ? convo.user2 : convo.user1;
+  };
 
   return (
-    <div className="max-w-6xl mx-auto h-[80vh] flex bg-white rounded-3xl shadow-sm border border-gray-100 overflow-hidden">
+    <div className="max-w-6xl mx-auto py-8 px-4 h-[calc(100vh-100px)]">
       <Helmet><title>Messages | CampusXchange</title></Helmet>
-
-      {/* Sidebar */}
-      <div className="w-1/3 border-r border-gray-100 flex flex-col bg-gray-50/50">
-        <div className="p-6 border-b border-gray-100 bg-white">
-          <h2 className="text-2xl font-black text-gray-900">Messages</h2>
+      
+      <div className="flex items-center space-x-3 mb-6">
+        <div className="w-12 h-12 bg-white/10 rounded-2xl flex items-center justify-center text-blue-400 border border-white/20 shadow-lg">
+          <MessageSquare size={24} />
         </div>
-        <div className="overflow-y-auto flex-1 p-4 space-y-2">
-          {loadingList ? (
-            <div className="flex justify-center py-10"><Loader2 className="w-6 h-6 animate-spin text-blue-500" /></div>
-          ) : conversations.length > 0 ? (
-            conversations.map(c => (
-              <div 
-                key={c.id} 
-                onClick={() => setActiveConvo(c)}
-                className={`p-4 rounded-2xl cursor-pointer transition-all flex items-center gap-3 ${activeConvo?.id === c.id ? 'bg-blue-600 text-white shadow-md' : 'hover:bg-gray-100 bg-white border border-transparent'}`}
-              >
-                <div className={`w-10 h-10 rounded-full flex items-center justify-center font-bold ${activeConvo?.id === c.id ? 'bg-white/20' : 'bg-blue-100 text-blue-600'}`}>
-                  <User size={20} />
-                </div>
-                <div className="flex-1 overflow-hidden">
-                  <p className="font-bold truncate text-sm">User {getOtherUserId(c)}</p>
-                  {c.last_message && (
-                    <p className={`text-xs truncate ${activeConvo?.id === c.id ? 'text-blue-100' : 'text-gray-400'}`}>
-                      {c.last_message.message_text}
-                    </p>
-                  )}
-                </div>
-              </div>
-            ))
-          ) : (
-            <p className="text-gray-400 text-center py-10 font-medium">No conversations yet.</p>
-          )}
-        </div>
+        <h1 className="text-3xl font-extrabold text-white tracking-tight">Messages</h1>
       </div>
 
-      {/* Chat Area */}
-      <div className="w-2/3 flex flex-col bg-slate-50 relative">
-        {activeConvo ? (
-          <>
-            <div className="p-6 border-b border-gray-100 bg-white/80 backdrop-blur-md flex items-center gap-4 z-10 sticky top-0">
-              <div className="w-10 h-10 bg-gradient-to-tr from-blue-500 to-purple-500 rounded-full flex items-center justify-center text-white"><User size={20}/></div>
-              <h3 className="font-bold text-lg text-gray-900">User {getOtherUserId(activeConvo)}</h3>
-            </div>
-            
-            <div className="flex-1 overflow-y-auto p-6 space-y-4">
-              {loadingChat ? (
-                <div className="flex justify-center"><Loader2 className="w-8 h-8 animate-spin text-blue-500" /></div>
-              ) : (
-                messages.map((m, i) => {
-                  const isMe = m.sender_id === user?.id;
-                  return (
-                    <div key={i} className={`flex ${isMe ? 'justify-end' : 'justify-start'}`}>
-                      <div className={`max-w-[70%] p-4 rounded-3xl ${isMe ? 'bg-blue-600 text-white rounded-tr-sm shadow-sm' : 'bg-white text-gray-800 rounded-tl-sm shadow-sm border border-gray-100'}`}>
-                        <p className="text-[15px]">{m.message_text}</p>
-                        <span className={`text-[10px] mt-1 block font-medium ${isMe ? 'text-blue-200' : 'text-gray-400'}`}>
-                          {new Date(m.created_at).toLocaleTimeString([], {hour: '2-digit', minute:'2-digit'})}
-                        </span>
-                      </div>
-                    </div>
-                  )
-                })
-              )}
-              <div ref={messagesEndRef} />
-            </div>
-
-            <div className="p-4 bg-white border-t border-gray-100">
-              <form onSubmit={sendMessage} className="flex items-center gap-2">
-                <input 
-                  type="text" 
-                  value={newMessage}
-                  onChange={e => setNewMessage(e.target.value)}
-                  placeholder="Type a message..."
-                  className="flex-1 bg-gray-50 border border-gray-200 rounded-full px-5 py-3 focus:outline-none focus:ring-2 focus:ring-blue-500/20 focus:border-blue-500 font-medium"
-                />
-                <button type="submit" disabled={!newMessage.trim()} className="w-12 h-12 bg-blue-600 rounded-full text-white flex items-center justify-center hover:bg-blue-700 transition-colors disabled:opacity-50 shadow-md">
-                  <Send size={20} className="ml-1" />
-                </button>
-              </form>
-            </div>
-          </>
-        ) : (
-          <div className="flex-1 flex flex-col items-center justify-center text-gray-400 p-10 text-center">
-            <div className="w-20 h-20 bg-gray-100 rounded-full flex items-center justify-center mb-6">
-              <MessageSquare size={40} className="text-gray-300" />
-            </div>
-            <p className="text-xl font-bold text-gray-800 mb-2">Your Messages</p>
-            <p className="text-gray-500">Select a conversation from the sidebar to view chat or start a new exchange request.</p>
+      <div className="glass-card rounded-3xl border border-white/10 shadow-2xl flex h-[80%] overflow-hidden">
+        
+        {/* Left Panel: Conversations List */}
+        <div className={`w-full md:w-1/3 border-r border-white/10 flex flex-col ${activeConvo ? 'hidden md:flex' : 'flex'}`}>
+          <div className="p-4 border-b border-white/10 bg-white/5">
+            <h2 className="text-white font-bold text-lg">Recent Chats</h2>
           </div>
-        )}
+          
+          <div className="flex-1 overflow-y-auto custom-scrollbar">
+            {loadingConvos ? (
+              <div className="flex justify-center py-10"><Loader2 className="w-8 h-8 animate-spin text-blue-500" /></div>
+            ) : conversations.length > 0 ? (
+              conversations.map(c => {
+                const otherUser = getOtherUser(c);
+                const isActive = activeConvo?.id === c.id;
+                return (
+                  <div 
+                    key={c.id} 
+                    onClick={() => handleSelectConvo(c)}
+                    className={`p-4 border-b border-white/5 cursor-pointer transition-colors flex items-center gap-3 ${isActive ? 'bg-blue-500/20 shadow-inner' : 'hover:bg-white/5'}`}
+                  >
+                    <div className="w-12 h-12 rounded-full bg-slate-800 border border-white/20 flex items-center justify-center overflow-hidden flex-shrink-0">
+                      {otherUser?.profile_image_url ? (
+                        <img src={otherUser.profile_image_url} alt={otherUser.name} className="w-full h-full object-cover" />
+                      ) : (
+                        <UserIcon className="text-white/50 w-6 h-6" />
+                      )}
+                    </div>
+                    <div className="flex-1 min-w-0">
+                      <h3 className="text-white font-semibold truncate">{otherUser?.name || `User ${otherUser?.id || getOtherUser(c)?.id || 'Unknown'}`}</h3>
+                      <p className="text-white/50 text-sm truncate">{c.last_message?.message_text || 'No messages yet'}</p>
+                    </div>
+                  </div>
+                );
+              })
+            ) : (
+              <div className="text-center py-10 px-4">
+                <MessageSquare className="w-12 h-12 text-white/20 mx-auto mb-4" />
+                <p className="text-white/50 font-medium">No conversations yet.</p>
+                <p className="text-white/30 text-sm mt-2">Find an item you like and send a message!</p>
+              </div>
+            )}
+          </div>
+        </div>
+
+        {/* Right Panel: Chat Window */}
+        <div className={`w-full md:w-2/3 flex flex-col bg-black/20 ${!activeConvo ? 'hidden md:flex' : 'flex'}`}>
+          {activeConvo ? (
+            <>
+              {/* Chat Header */}
+              <div className="p-4 border-b border-white/10 bg-white/5 flex items-center gap-3">
+                <button 
+                  onClick={() => setActiveConvo(null)}
+                  className="md:hidden p-2 text-white/70 hover:text-white rounded-full hover:bg-white/10 transition-colors"
+                >
+                  <ArrowLeft size={20} />
+                </button>
+                <div className="w-10 h-10 rounded-full bg-slate-800 border border-white/20 flex items-center justify-center overflow-hidden">
+                  {getOtherUser(activeConvo)?.profile_image_url ? (
+                    <img src={getOtherUser(activeConvo).profile_image_url} alt="Profile" className="w-full h-full object-cover" />
+                  ) : (
+                    <UserIcon className="text-white/50 w-5 h-5" />
+                  )}
+                </div>
+                <div>
+                  <h2 className="text-white font-bold">{getOtherUser(activeConvo)?.name || `User ${getOtherUser(activeConvo)?.id || 'Unknown'}`}</h2>
+                  <p className="text-white/40 text-xs">Connected</p>
+                </div>
+              </div>
+
+              {/* Messages Area */}
+              <div className="flex-1 overflow-y-auto p-4 space-y-4 custom-scrollbar">
+                {loadingMessages ? (
+                  <div className="flex justify-center py-10"><Loader2 className="w-8 h-8 animate-spin text-blue-500" /></div>
+                ) : messages.length > 0 ? (
+                  messages.map((msg, idx) => {
+                    const isMe = msg.sender_id === user.id;
+                    return (
+                      <motion.div 
+                        initial={{ opacity: 0, y: 10 }}
+                        animate={{ opacity: 1, y: 0 }}
+                        key={msg.id || idx} 
+                        className={`flex ${isMe ? 'justify-end' : 'justify-start'}`}
+                      >
+                        <div 
+                          className={`max-w-[75%] rounded-2xl px-5 py-3 shadow-lg ${
+                            isMe 
+                              ? 'bg-gradient-to-r from-blue-600 to-purple-600 text-white rounded-br-sm' 
+                              : 'bg-white/10 border border-white/10 text-white rounded-bl-sm'
+                          }`}
+                        >
+                          <p className="text-sm md:text-base">{msg.message_text}</p>
+                          <span className={`text-[10px] mt-1 block ${isMe ? 'text-blue-100/70 text-right' : 'text-white/40 text-left'}`}>
+                            {new Date(msg.created_at).toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' })}
+                          </span>
+                        </div>
+                      </motion.div>
+                    );
+                  })
+                ) : (
+                  <div className="h-full flex flex-col items-center justify-center text-white/40">
+                    <p className="bg-white/5 px-4 py-2 rounded-full text-sm">This is the start of your conversation.</p>
+                  </div>
+                )}
+                <div ref={messagesEndRef} />
+              </div>
+
+              {/* Chat Input */}
+              <div className="p-4 border-t border-white/10 bg-white/5">
+                <form onSubmit={handleSendMessage} className="flex items-center gap-2">
+                  <input
+                    type="text"
+                    value={newMessage}
+                    onChange={(e) => setNewMessage(e.target.value)}
+                    placeholder="Type a message..."
+                    className="flex-1 bg-black/40 border border-white/10 rounded-full px-5 py-3 text-white placeholder-white/30 focus:outline-none focus:ring-2 focus:ring-blue-500/50 focus:border-blue-500/50 transition-all text-sm shadow-inner"
+                  />
+                  <button
+                    type="submit"
+                    disabled={sending || !newMessage.trim()}
+                    className="w-12 h-12 rounded-full bg-blue-600 flex items-center justify-center text-white shadow-[0_0_15px_rgba(37,99,235,0.4)] hover:shadow-[0_0_20px_rgba(37,99,235,0.6)] disabled:opacity-50 disabled:cursor-not-allowed transition-all transform hover:scale-105"
+                  >
+                    {sending ? <Loader2 className="w-5 h-5 animate-spin" /> : <Send size={20} className="ml-1" />}
+                  </button>
+                </form>
+              </div>
+            </>
+          ) : (
+            <div className="flex-1 flex flex-col items-center justify-center text-white/30 p-8 text-center bg-[url('https://www.transparenttextures.com/patterns/cubes.png')] bg-blend-overlay">
+              <MessageSquare className="w-20 h-20 mb-6 opacity-20" />
+              <h2 className="text-2xl font-bold text-white/50 mb-2">Your Messages</h2>
+              <p>Select a conversation from the sidebar to start chatting.</p>
+            </div>
+          )}
+        </div>
+
       </div>
     </div>
   );

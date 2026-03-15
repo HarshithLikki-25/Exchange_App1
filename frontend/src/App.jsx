@@ -3,6 +3,7 @@ import { BrowserRouter, Routes, Route, Navigate } from 'react-router-dom';
 import { Helmet } from 'react-helmet-async';
 import { AuthProvider, useAuth } from './context/AuthContext';
 import Navbar from './components/Navbar';
+import Landing from './pages/Landing';
 import Home from './pages/Home';
 import Login from './pages/Login';
 import Register from './pages/Register';
@@ -20,6 +21,17 @@ const PrivateRoute = ({ children }) => {
   return user ? children : <Navigate to="/login" />;
 };
 
+// Layout for all pages except Landing
+function PageLayout({ children }) {
+  return (
+    <div className="min-h-screen flex flex-col pt-16">
+      <main className="flex-grow container mx-auto px-4 py-8">
+        {children}
+      </main>
+    </div>
+  );
+}
+
 function App() {
   return (
     <AuthProvider>
@@ -28,23 +40,24 @@ function App() {
         <meta name="description" content="A product exchange platform for college students." />
       </Helmet>
       <BrowserRouter>
-        <div className="min-h-screen flex flex-col pt-16">
-          <Navbar />
-          <main className="flex-grow container mx-auto px-4 py-8">
-            <Routes>
-              <Route path="/" element={<Home />} />
-              <Route path="/login" element={<Login />} />
-              <Route path="/register" element={<Register />} />
-              <Route path="/product/:id" element={<ProductDetail />} />
-            <Route path="/profile/:id" element={<Profile />} />
-            <Route path="/add-product" element={<PrivateRoute><AddProduct /></PrivateRoute>} />
-              <Route path="/dashboard" element={<PrivateRoute><Dashboard /></PrivateRoute>} />
-              <Route path="/favorites" element={<PrivateRoute><Favorites /></PrivateRoute>} />
-            <Route path="/notifications" element={<PrivateRoute><Notifications /></PrivateRoute>} />
-            <Route path="/messages" element={<PrivateRoute><Chat /></PrivateRoute>} />
-            </Routes>
-          </main>
-        </div>
+        <Navbar />
+        <Routes>
+          {/* Landing — full-width, no container constraint */}
+          <Route path="/" element={<Landing />} />
+
+          {/* All other routes inside padded container */}
+          <Route path="/market" element={<PageLayout><Home /></PageLayout>} />
+          <Route path="/login" element={<PageLayout><Login /></PageLayout>} />
+          <Route path="/register" element={<PageLayout><Register /></PageLayout>} />
+          <Route path="/product/:id" element={<PageLayout><ProductDetail /></PageLayout>} />
+          <Route path="/profile/:id" element={<PageLayout><Profile /></PageLayout>} />
+          <Route path="/add-product" element={<PageLayout><PrivateRoute><AddProduct /></PrivateRoute></PageLayout>} />
+          <Route path="/dashboard" element={<PageLayout><PrivateRoute><Dashboard /></PrivateRoute></PageLayout>} />
+          <Route path="/favorites" element={<PageLayout><PrivateRoute><Favorites /></PrivateRoute></PageLayout>} />
+          <Route path="/notifications" element={<PageLayout><PrivateRoute><Notifications /></PrivateRoute></PageLayout>} />
+          <Route path="/messages" element={<PageLayout><PrivateRoute><Chat /></PrivateRoute></PageLayout>} />
+          <Route path="/chat" element={<PageLayout><PrivateRoute><Chat /></PrivateRoute></PageLayout>} />
+        </Routes>
       </BrowserRouter>
     </AuthProvider>
   );

@@ -13,6 +13,8 @@ class ExchangeSchedule(Base):
     location = Column(String, nullable=False)
     date = Column(Date, nullable=False)
     time_slot = Column(String, nullable=False)
+    description = Column(String, nullable=True)
+    status = Column(String, default="pending")
     created_at = Column(DateTime, default=lambda: datetime.now(timezone.utc))
 
     exchange_request = relationship("ExchangeRequest", backref="schedule")
