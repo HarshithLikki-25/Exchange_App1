@@ -119,7 +119,7 @@ export default function Navbar() {
             <span className="sm:hidden">CX</span>
           </Link>
 
-          <div className="hidden md:flex items-center space-x-6 text-sm font-semibold">
+          <div className="hidden lg:flex items-center space-x-6 text-sm font-semibold">
             <NavLink to={user ? "/market" : "/"} icon={Store} text="Market" />
             
             {user ? (
@@ -213,7 +213,7 @@ export default function Navbar() {
           </div>
 
           {/* Mobile Menu Button */}
-          <div className="md:hidden flex items-center">
+          <div className="lg:hidden flex items-center">
             <button onClick={() => setIsOpen(!isOpen)} className="text-white/80">
               {isOpen ? <X size={24} /> : <Menu size={24} />}
             </button>
@@ -223,7 +223,7 @@ export default function Navbar() {
 
       {/* Mobile Nav */}
       {isOpen && (
-        <div className="md:hidden absolute top-20 left-1/2 -translate-x-1/2 w-[95%] bg-slate-900/95 backdrop-blur-3xl rounded-3xl border border-white/10 shadow-2xl overflow-hidden z-40">
+        <div className="lg:hidden absolute top-20 left-1/2 -translate-x-1/2 w-[95%] bg-slate-900/95 backdrop-blur-3xl rounded-3xl border border-white/10 shadow-2xl overflow-hidden z-40">
           <div className="px-6 py-6 space-y-4 flex flex-col items-center text-lg font-semibold">
             <NavLink to={user ? "/market" : "/"} icon={Store} text="Market" />
             {user ? (

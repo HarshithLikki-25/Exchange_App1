@@ -19,6 +19,7 @@ class ExchangeScheduleCreate(ExchangeScheduleBase):
 class ExchangeScheduleOut(ExchangeScheduleBase):
     id: int
     exchange_request_id: int
+    proposed_by_id: int
     created_at: datetime
 
     model_config = {"from_attributes": True}

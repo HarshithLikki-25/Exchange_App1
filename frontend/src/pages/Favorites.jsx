@@ -37,13 +37,13 @@ export default function Favorites() {
   return (
     <div className="max-w-7xl mx-auto space-y-8 animate-in fade-in duration-500">
       
-      <div className="flex items-center space-x-3 mb-8 pb-4 border-b border-gray-200">
-        <div className="p-3 bg-red-50 text-red-500 rounded-xl shadow-inner">
+      <div className="flex items-center space-x-3 mb-8 pb-4 border-b border-white/10">
+        <div className="p-3 bg-red-500/10 text-red-400 border border-red-500/20 rounded-xl shadow-inner">
           <Heart size={28} className="fill-current" />
         </div>
         <div>
-          <h1 className="text-3xl font-extrabold text-gray-900 tracking-tight">Your Favorites</h1>
-          <p className="text-gray-500 mt-1">Items you're keeping an eye on.</p>
+          <h1 className="text-3xl font-extrabold text-white tracking-tight">Your Favorites</h1>
+          <p className="text-white/50 mt-1">Items you're keeping an eye on.</p>
         </div>
       </div>
 
@@ -64,11 +64,11 @@ export default function Favorites() {
         </div>
       ) : (
         <div className="text-center py-24 glass-card rounded-3xl">
-          <div className="inline-flex items-center justify-center w-20 h-20 bg-gray-50 rounded-full mb-4">
-            <Heart size={32} className="text-gray-300" />
+          <div className="inline-flex items-center justify-center w-20 h-20 bg-white/5 border border-white/10 rounded-full mb-4">
+            <Heart size={32} className="text-white/20" />
           </div>
-          <h2 className="text-2xl font-bold text-gray-800 mb-2">No favorites yet</h2>
-          <p className="text-gray-500">When you see an item you like, click the heart icon to save it here.</p>
+          <h2 className="text-2xl font-bold text-white mb-2">No favorites yet</h2>
+          <p className="text-white/50">When you see an item you like, click the heart icon to save it here.</p>
         </div>
       )}
     </div>

@@ -29,6 +29,7 @@ def create_exchange_schedule(db: Session, schedule_in: ExchangeScheduleCreate, u
         
     schedule = ExchangeSchedule(
         exchange_request_id=req.id,
+        proposed_by_id=user_id,
         pickup_or_delivery=schedule_in.pickup_or_delivery,
         location=schedule_in.location,
         date=schedule_in.date,
@@ -70,9 +71,11 @@ def update_schedule_status(db: Session, schedule_id: int, user_id: int, status: 
     req = db.query(ExchangeRequest).filter(ExchangeRequest.id == schedule.exchange_request_id).first()
     product = db.query(Product).filter(Product.id == req.product_id).first()
     
-    # Only allow the other party to modify it? Well, anyone involved can accept/reject, but usually it's the receiver.
     if user_id != req.requested_by and user_id != product.owner_id:
         raise HTTPException(status_code=403, detail="Not authorized")
+
+    if user_id == schedule.proposed_by_id:
+        raise HTTPException(status_code=403, detail="You cannot accept or reject your own proposal")
 
     if status not in ["accepted", "rejected"]:
         raise HTTPException(status_code=400, detail="Invalid status")

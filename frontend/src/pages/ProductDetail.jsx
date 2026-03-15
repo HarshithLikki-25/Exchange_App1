@@ -96,11 +96,11 @@ export default function ProductDetail() {
       {/* Details Section */}
       <div className="flex flex-col py-4">
         <div className="flex justify-between items-start mb-4">
-          <h1 className="text-4xl font-extrabold text-gray-900 tracking-tight">{product.title}</h1>
+          <h1 className="text-4xl font-extrabold text-white tracking-tight">{product.title}</h1>
           {isOwner && (
             <button 
               onClick={handleDelete}
-              className="p-3 text-red-500 bg-red-50 hover:bg-red-100 rounded-full transition-colors"
+              className="p-3 text-red-500 bg-red-500/10 hover:bg-red-500/20 border border-red-500/20 rounded-full transition-colors"
               title="Delete Listing"
             >
               <Trash2 size={24} />
@@ -109,73 +109,79 @@ export default function ProductDetail() {
         </div>
 
         <div className="flex flex-wrap gap-3 mb-8">
-          <span className="inline-flex items-center space-x-1 px-3 py-1 bg-blue-50 text-blue-700 rounded-full text-sm font-semibold capitalize">
-            <Tag size={14} />
+          <span className="inline-flex items-center space-x-1.5 px-3.5 py-1.5 bg-blue-500/20 border border-blue-400/20 text-blue-300 rounded-full text-sm font-semibold capitalize tracking-wide">
+            <Tag size={15} />
             <span>{product.category || 'Uncategorized'}</span>
           </span>
           {product.condition && (
-            <span className="inline-flex items-center space-x-1 px-3 py-1 bg-green-50 text-green-700 rounded-full text-sm font-semibold">
-              <span className="w-2 h-2 rounded-full bg-green-500"></span>
+            <span className="inline-flex items-center space-x-1.5 px-3.5 py-1.5 bg-green-500/20 border border-green-400/20 text-green-300 rounded-full text-sm font-semibold tracking-wide">
+              <span className="w-2 h-2 rounded-full bg-green-400 shadow-[0_0_8px_rgba(74,222,128,0.8)]"></span>
               <span>{product.condition}</span>
             </span>
           )}
-          <span className="inline-flex items-center space-x-1 px-3 py-1 bg-gray-50 text-gray-600 rounded-full text-sm font-medium">
-            <Clock size={14} />
+          <span className="inline-flex items-center space-x-1.5 px-3.5 py-1.5 bg-white/5 border border-white/10 text-white/70 rounded-full text-sm font-medium tracking-wide">
+            <Clock size={15} />
             <span>{new Date(product.created_at).toLocaleDateString()}</span>
           </span>
         </div>
 
-        <div className="prose prose-blue max-w-none text-gray-600 mb-10">
-          <p className="whitespace-pre-line text-lg leading-relaxed">{product.description || 'No description provided.'}</p>
+        <div className="max-w-none text-white/70 mb-10">
+          <p className="whitespace-pre-line text-lg leading-relaxed font-medium">{product.description || 'No description provided.'}</p>
         </div>
 
-        <div className="mt-auto bg-gray-50 rounded-2xl p-6 border border-gray-100">
+        <div className="mt-auto bg-white/5 backdrop-blur-xl rounded-3xl p-6 md:p-8 border border-white/10 shadow-2xl">
           {!user ? (
-            <div className="text-center">
-              <p className="text-gray-600 mb-4">You must be logged in to request an exchange.</p>
-              <button onClick={() => navigate('/login')} className="px-6 py-2 bg-blue-600 text-white rounded-lg font-medium inline-block hover:bg-blue-700 transition">Log in now</button>
+            <div className="text-center py-4">
+              <p className="text-white/60 mb-5 font-medium">You must be logged in to request an exchange.</p>
+              <button onClick={() => navigate('/login')} className="px-8 py-3 bg-gradient-to-r from-blue-600 to-purple-600 text-white rounded-xl font-bold inline-block hover:scale-105 transition-transform shadow-lg shadow-purple-500/20 tracking-wide uppercase text-sm">Log in now</button>
             </div>
           ) : isOwner ? (
-            <p className="text-center text-gray-500 font-medium py-4">This is your listing.</p>
+            <div className="text-center bg-blue-500/10 border border-blue-500/20 py-6 rounded-2xl">
+              <p className="text-blue-300 font-bold text-lg">This is your listing.</p>
+            </div>
           ) : (
-            <form onSubmit={handleExchange} className="space-y-4">
-              <h3 className="text-lg font-bold text-gray-900 mb-2 border-b pb-2">Request an Exchange</h3>
+            <form onSubmit={handleExchange} className="space-y-5">
+              <h3 className="text-2xl font-extrabold text-white mb-2 border-b border-white/10 pb-4">Request an Exchange</h3>
               
-              {error && <div className="text-red-600 text-sm bg-red-50 p-2 rounded">{error}</div>}
-              {success && <div className="text-green-600 text-sm bg-green-50 p-2 rounded">{success}</div>}
+              {error && <div className="text-red-400 text-sm bg-red-500/10 border border-red-500/20 p-3 rounded-lg font-semibold flex items-center shadow-inner"><span className="w-2 h-2 bg-red-400 rounded-full mr-2 shadow-[0_0_8px_rgba(248,113,113,0.8)]"></span>{error}</div>}
+              {success && <div className="text-green-400 text-sm bg-green-500/10 border border-green-500/20 p-3 rounded-lg font-semibold flex items-center shadow-inner"><span className="w-2 h-2 bg-green-400 rounded-full mr-2 shadow-[0_0_8px_rgba(74,222,128,0.8)]"></span>{success}</div>}
               
-              <div>
-                <label className="block text-sm font-semibold text-gray-700 mb-1">Select an item to offer</label>
+              <div className="space-y-2">
+                <label className="block text-sm font-bold text-white/80">Select an item to offer</label>
                 <select 
                   value={offeredProductId}
                   onChange={(e) => setOfferedProductId(e.target.value)}
-                  className="w-full p-3 bg-white border border-gray-200 rounded-xl focus:ring-2 focus:ring-blue-500 outline-none text-sm mb-2"
+                  className="w-full p-4 bg-black/20 border border-white/10 rounded-xl focus:ring-2 focus:ring-blue-500 focus:border-blue-500 outline-none text-white text-sm transition-all shadow-inner appearance-none custom-select-arrow cursor-pointer"
                   required
                 >
-                  <option value="">-- Choose from your listings --</option>
+                  <option value="" className="bg-slate-900 text-white">-- Choose from your listings --</option>
                   {myProducts.map(p => (
-                    <option key={p.id} value={p.id}>{p.title}</option>
+                    <option key={p.id} value={p.id} className="bg-slate-900 text-white">{p.title}</option>
                   ))}
                 </select>
                 {myProducts.length === 0 && (
-                  <p className="text-xs text-red-500 mt-1">You don't have any items to offer. Post an item first!</p>
+                  <p className="text-xs text-red-400 mt-2 font-medium">You don't have any items to offer. Post an item first!</p>
                 )}
               </div>
 
-              <textarea
-                value={message}
-                onChange={(e) => setMessage(e.target.value)}
-                placeholder="Add a message for the owner..."
-                className="w-full p-3 border border-gray-200 rounded-xl focus:ring-2 focus:ring-blue-500 outline-none resize-none h-24 text-sm"
-                required
-              />
+              <div className="space-y-2">
+                <label className="block text-sm font-bold text-white/80">Add a message</label>
+                <textarea
+                  value={message}
+                  onChange={(e) => setMessage(e.target.value)}
+                  placeholder="Hey, I'd love to trade this..."
+                  className="w-full p-4 bg-black/20 border border-white/10 rounded-xl focus:ring-2 focus:ring-blue-500 focus:border-blue-500 outline-none resize-none h-28 text-sm text-white placeholder-white/30 transition-all shadow-inner"
+                  required
+                />
+              </div>
+              
               <button
                 type="submit"
                 disabled={sending || myProducts.length === 0}
-                className="w-full flex items-center justify-center space-x-2 py-3 bg-gradient-to-r from-blue-600 to-purple-600 text-white font-bold rounded-xl shadow-md hover:shadow-lg transition-transform transform hover:-translate-y-0.5 disabled:opacity-50"
+                className="w-full flex items-center justify-center space-x-2 py-4 bg-gradient-to-r from-blue-600 to-purple-600 text-white font-extrabold uppercase tracking-wide rounded-xl shadow-[0_0_20px_rgba(168,85,247,0.3)] hover:shadow-[0_0_25px_rgba(168,85,247,0.5)] transition-all transform hover:-translate-y-0.5 disabled:opacity-50 disabled:cursor-not-allowed mt-2"
               >
                 <span>{sending ? 'Sending...' : 'Send Request'}</span>
-                {!sending && <Send size={18} />}
+                {!sending && <Send size={20} className="ml-1" />}
               </button>
             </form>
           )}

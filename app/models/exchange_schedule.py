@@ -9,6 +9,7 @@ class ExchangeSchedule(Base):
 
     id = Column(Integer, primary_key=True, index=True)
     exchange_request_id = Column(Integer, ForeignKey("exchange_requests.id"), nullable=False, unique=True)
+    proposed_by_id = Column(Integer, ForeignKey("users.id"), nullable=False, default=1)
     pickup_or_delivery = Column(String, nullable=False)
     location = Column(String, nullable=False)
     date = Column(Date, nullable=False)
