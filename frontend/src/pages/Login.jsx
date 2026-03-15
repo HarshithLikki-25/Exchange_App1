@@ -91,6 +91,7 @@ export default function Login() {
                 <input type="checkbox" className="w-4 h-4 rounded border-white/20 bg-black/20 text-purple-600 focus:ring-purple-500/20 transition-all cursor-pointer" />
                 <span>Remember me</span>
               </label>
+              <Link to="/forgot-password" size="sm" className="text-sm font-bold text-white/40 hover:text-purple-400 transition-colors">Forgot password?</Link>
             </div>
 
             <button

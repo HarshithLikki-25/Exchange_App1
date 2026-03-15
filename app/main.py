@@ -65,10 +65,29 @@ def startup_event():
             else:
                 # Postgres usually needs a more specific check or just try-catch
                 conn.execute(text("ALTER TABLE exchange_schedules ADD COLUMN IF NOT EXISTS proposed_by_id INTEGER DEFAULT 1"))
-            print("Safety Migration: Checked/Applied proposed_by_id to exchange_schedules")
+            
+            # Reset OTP fields
+            if "sqlite" in db_url:
+                conn.execute(text("ALTER TABLE users ADD COLUMN reset_otp VARCHAR"))
+                conn.execute(text("ALTER TABLE users ADD COLUMN reset_otp_expires DATETIME"))
+            else:
+                conn.execute(text("ALTER TABLE users ADD COLUMN IF NOT EXISTS reset_otp VARCHAR"))
+                conn.execute(text("ALTER TABLE users ADD COLUMN IF NOT EXISTS reset_otp_expires TIMESTAMP"))
+                
+            print("Safety Migration: Checked/Applied reset fields to users")
     except Exception as e:
         # If it fails, the column likely already exists, so we just log and continue
         print(f"Startup check note: {e}")
+
+@app.get("/db-check", tags=["Health"])
+def db_check():
+    db_url = str(os.getenv("DATABASE_URL", "sqlite"))
+    is_postgres = "postgresql" in db_url or "postgres" in db_url
+    return {
+        "database_type": "PostgreSQL" if is_postgres else "SQLite (Ephemeral)",
+        "persistence_status": "Persistent" if is_postgres else "TEMPORARY (Data will vanish after deploy)",
+        "connection_start": db_url[:10] + "..."
+    }
 
 # Include routers
 app.include_router(auth.router)

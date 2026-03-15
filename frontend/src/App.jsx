@@ -14,6 +14,7 @@ import Favorites from './pages/Favorites';
 import Profile from './pages/Profile';
 import Notifications from './pages/Notifications';
 import Chat from './pages/Chat';
+import ForgotPassword from './pages/ForgotPassword';
 
 const PrivateRoute = ({ children }) => {
   const { user, loading } = useAuth();
@@ -49,6 +50,7 @@ function App() {
           <Route path="/market" element={<PageLayout><Home /></PageLayout>} />
           <Route path="/login" element={<PageLayout><Login /></PageLayout>} />
           <Route path="/register" element={<PageLayout><Register /></PageLayout>} />
+          <Route path="/forgot-password" element={<PageLayout><ForgotPassword /></PageLayout>} />
           <Route path="/product/:id" element={<PageLayout><ProductDetail /></PageLayout>} />
           <Route path="/profile/:id" element={<PageLayout><Profile /></PageLayout>} />
           <Route path="/add-product" element={<PageLayout><PrivateRoute><AddProduct /></PrivateRoute></PageLayout>} />
