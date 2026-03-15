@@ -11,8 +11,11 @@ DATABASE_URL = os.getenv("DATABASE_URL", "sqlite:///./exchange.db").strip()
 if DATABASE_URL and DATABASE_URL.startswith("postgres://"):
     DATABASE_URL = DATABASE_URL.replace("postgres://", "postgresql://", 1)
 
-# SQLite needs check_same_thread: False
-connect_args = {"check_same_thread": False} if DATABASE_URL.startswith("sqlite") else {}
+# SQLite needs check_same_thread: False, Postgres often needs sslmode: require
+if DATABASE_URL.startswith("sqlite"):
+    connect_args = {"check_same_thread": False}
+else:
+    connect_args = {"sslmode": "require"}
 
 engine = create_engine(
     DATABASE_URL,

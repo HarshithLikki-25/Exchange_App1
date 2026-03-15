@@ -48,50 +48,58 @@ async def global_exception_handler(request: Request, exc: Exception):
 
 from sqlalchemy import text
 
+from app.database import engine, Base, DATABASE_URL
+
 @app.on_event("startup")
 def startup_event():
-    db_url = str(os.getenv("DATABASE_URL", "sqlite"))
-    print(f"Backend started. Database: {db_url[:15]}...")
+    print(f"Backend started. Database: {DATABASE_URL[:20]}...")
     
     # Create all database tables on startup
     try:
         Base.metadata.create_all(bind=engine)
         print("Database tables synchronized.")
     except Exception as e:
-        print(f"Warning: Table creation error: {e}")
+        print(f"CRITICAL: Table creation failed: {e}")
 
     # Safety Check: Ensure 'proposed_by_id' column exists in exchange_schedules
-    # This prevents 500 errors if the table was created before the column was added
     try:
         with engine.begin() as conn:
             # Check if column exists
-            if "sqlite" in db_url:
+            if "sqlite" in DATABASE_URL:
                 conn.execute(text("ALTER TABLE exchange_schedules ADD COLUMN proposed_by_id INTEGER DEFAULT 1"))
             else:
-                # Postgres usually needs a more specific check or just try-catch
                 conn.execute(text("ALTER TABLE exchange_schedules ADD COLUMN IF NOT EXISTS proposed_by_id INTEGER DEFAULT 1"))
             
             # Reset OTP fields
-            if "sqlite" in db_url:
+            if "sqlite" in DATABASE_URL:
                 conn.execute(text("ALTER TABLE users ADD COLUMN reset_otp VARCHAR"))
                 conn.execute(text("ALTER TABLE users ADD COLUMN reset_otp_expires DATETIME"))
             else:
                 conn.execute(text("ALTER TABLE users ADD COLUMN IF NOT EXISTS reset_otp VARCHAR"))
                 conn.execute(text("ALTER TABLE users ADD COLUMN IF NOT EXISTS reset_otp_expires TIMESTAMP"))
                 
-            print("Safety Migration: Checked/Applied reset fields to users")
+            print("Safety Migration: Successfully verified schema")
     except Exception as e:
-        # If it fails, the column likely already exists, so we just log and continue
-        print(f"Startup check note: {e}")
+        print(f"Startup check note (likely columns already exist): {e}")
 
 @app.get("/db-check", tags=["Health"])
 def db_check():
-    db_url = str(os.getenv("DATABASE_URL", "sqlite"))
-    is_postgres = "postgresql" in db_url or "postgres" in db_url
+    is_postgres = "postgresql" in DATABASE_URL or "postgres" in DATABASE_URL
+    status = "Active"
+    error = None
+    try:
+        with engine.connect() as conn:
+            conn.execute(text("SELECT 1"))
+    except Exception as e:
+        status = "CONNECTION FAILED"
+        error = str(e)
+
     return {
         "database_type": "PostgreSQL" if is_postgres else "SQLite (Ephemeral)",
         "persistence_status": "Persistent" if is_postgres else "TEMPORARY (Data will vanish after deploy)",
-        "connection_start": db_url[:10] + "..."
+        "connection_status": status,
+        "database_url_start": DATABASE_URL[:20],
+        "error": error
     }
 
 # Include routers
