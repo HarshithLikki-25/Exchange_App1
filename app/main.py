@@ -2,7 +2,7 @@ from fastapi import FastAPI
 from fastapi.middleware.cors import CORSMiddleware
 
 # Import all models to ensure they are registered with SQLAlchemy before table creation
-from app.models import User, Product, ExchangeRequest, Favorite  # noqa: F401
+from app.models import User, Product, ExchangeRequest, Favorite, ExchangeSchedule  # noqa: F401
 from app.database import engine, Base
 from app.routes import auth, products, exchange_requests, exchange_schedules, favorites, notifications, messages, users
 
