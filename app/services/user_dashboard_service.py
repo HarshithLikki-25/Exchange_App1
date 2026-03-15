@@ -23,9 +23,8 @@ def get_public_profile(db: Session, user_id: int) -> User:
     return user
 
 
-def upload_profile_image(db: Session, user: User, file: UploadFile) -> User:
-    """Upload profile image to Cloudinary and update user."""
-    url = upload_image(file)
+def upload_profile_image(db: Session, user: User, url: str) -> User:
+    """Update the user's profile image url after Cloudinary upload."""
     user.profile_image_url = url
     db.commit()
     db.refresh(user)

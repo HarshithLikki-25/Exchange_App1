@@ -25,14 +25,17 @@ def read_user_profile(current_user: User = Depends(get_current_user)):
     return get_user_profile(current_user)
 
 
+from app.utils.cloudinary_upload import upload_image
+
 @router.post("/profile-image", response_model=UserOut)
-def update_profile_image(
+async def update_profile_image(
     file: UploadFile = File(...),
     db: Session = Depends(get_db),
     current_user: User = Depends(get_current_user)
 ):
     """Upload a new profile picture."""
-    return upload_profile_image(db, current_user, file)
+    url = await upload_image(file)
+    return upload_profile_image(db, current_user, url)
 
 
 @router.get("/me/products", response_model=ProductListResponse)
