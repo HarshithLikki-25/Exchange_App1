@@ -174,8 +174,14 @@ export default function Dashboard() {
                   <div className="flex flex-col sm:flex-row justify-between sm:items-center gap-4">
                     <div className="flex-1">
                       <h4 className="font-bold text-white mb-1">Request #{req.id} for Product #{req.product_id}</h4>
-                      {req.offered_product_id && (
-                         <p className="text-sm text-blue-400 font-semibold mb-2">User offered Product #{req.offered_product_id}</p>
+                      {req.offered_product_id ? (
+                         <p className="text-sm text-blue-400 font-semibold mb-2 flex items-center gap-1">
+                           <Package size={14}/> User offered Product #{req.offered_product_id}
+                         </p>
+                      ) : (
+                         <p className="text-sm text-purple-400 font-semibold mb-2 flex items-center gap-1">
+                           <Tag size={14}/> Direct Purchase Request
+                         </p>
                       )}
                       <p className="text-white/60 text-sm italic border-l-2 border-white/20 pl-3 my-2 space-y-1 bg-white/5 p-2 rounded-r-lg">
                         "{req.message}"

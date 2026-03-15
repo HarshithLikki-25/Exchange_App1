@@ -141,28 +141,40 @@ export default function ProductDetail() {
             </div>
           ) : (
             <form onSubmit={handleExchange} className="space-y-5">
-              <h3 className="text-2xl font-extrabold text-white mb-2 border-b border-white/10 pb-4">Request an Exchange</h3>
+              <div className="space-y-4">
+                <div className="flex items-center justify-between">
+                  <h3 className="text-2xl font-extrabold text-white border-b border-white/10 pb-2">
+                    {myProducts.length > 0 ? 'Request an Exchange' : 'Direct Request'}
+                  </h3>
+                  {myProducts.length === 0 && (
+                    <span className="text-[10px] bg-blue-500/20 text-blue-300 px-2 py-0.5 rounded-full border border-blue-500/30 uppercase font-black tracking-tighter shadow-lg shadow-blue-500/10">Purchase Option</span>
+                  )}
+                </div>
+                {!myProducts.length > 0 && (
+                  <p className="text-white/40 text-xs font-medium bg-black/20 p-3 rounded-xl border border-white/5 shadow-inner">
+                    You don't have any items to exchange. You can still send a direct request to the owner to purchase or negotiate.
+                  </p>
+                )}
+              </div>
               
               {error && <div className="text-red-400 text-sm bg-red-500/10 border border-red-500/20 p-3 rounded-lg font-semibold flex items-center shadow-inner"><span className="w-2 h-2 bg-red-400 rounded-full mr-2 shadow-[0_0_8px_rgba(248,113,113,0.8)]"></span>{error}</div>}
               {success && <div className="text-green-400 text-sm bg-green-500/10 border border-green-500/20 p-3 rounded-lg font-semibold flex items-center shadow-inner"><span className="w-2 h-2 bg-green-400 rounded-full mr-2 shadow-[0_0_8px_rgba(74,222,128,0.8)]"></span>{success}</div>}
               
-              <div className="space-y-2">
-                <label className="block text-sm font-bold text-white/80">Select an item to offer</label>
-                <select 
-                  value={offeredProductId}
-                  onChange={(e) => setOfferedProductId(e.target.value)}
-                  className="w-full p-4 bg-black/20 border border-white/10 rounded-xl focus:ring-2 focus:ring-blue-500 focus:border-blue-500 outline-none text-white text-sm transition-all shadow-inner appearance-none custom-select-arrow cursor-pointer"
-                  required
-                >
-                  <option value="" className="bg-slate-900 text-white">-- Choose from your listings --</option>
-                  {myProducts.map(p => (
-                    <option key={p.id} value={p.id} className="bg-slate-900 text-white">{p.title}</option>
-                  ))}
-                </select>
-                {myProducts.length === 0 && (
-                  <p className="text-xs text-red-400 mt-2 font-medium">You don't have any items to offer. Post an item first!</p>
-                )}
-              </div>
+              {myProducts.length > 0 && (
+                <div className="space-y-2">
+                  <label className="block text-sm font-bold text-white/80">Select an item to offer (Optional)</label>
+                  <select 
+                    value={offeredProductId}
+                    onChange={(e) => setOfferedProductId(e.target.value)}
+                    className="w-full p-4 bg-black/20 border border-white/10 rounded-xl focus:ring-2 focus:ring-blue-500 focus:border-blue-500 outline-none text-white text-sm transition-all shadow-inner appearance-none custom-select-arrow cursor-pointer"
+                  >
+                    <option value="" className="bg-slate-900 text-white">-- No item (Direct Request) --</option>
+                    {myProducts.map(p => (
+                      <option key={p.id} value={p.id} className="bg-slate-900 text-white">{p.title}</option>
+                    ))}
+                  </select>
+                </div>
+              )}
 
               <div className="space-y-2">
                 <label className="block text-sm font-bold text-white/80">Add a message</label>
@@ -177,10 +189,12 @@ export default function ProductDetail() {
               
               <button
                 type="submit"
-                disabled={sending || myProducts.length === 0}
-                className="w-full flex items-center justify-center space-x-2 py-4 bg-gradient-to-r from-blue-600 to-purple-600 text-white font-extrabold uppercase tracking-wide rounded-xl shadow-[0_0_20px_rgba(168,85,247,0.3)] hover:shadow-[0_0_25px_rgba(168,85,247,0.5)] transition-all transform hover:-translate-y-0.5 disabled:opacity-50 disabled:cursor-not-allowed mt-2"
+                disabled={sending}
+                className="w-full flex items-center justify-center space-x-2 py-4 bg-gradient-to-r from-blue-600 to-purple-600 text-white font-extrabold uppercase tracking-wide rounded-xl shadow-[0_0_20px_rgba(168,85,247,0.3)] hover:shadow-[0_0_25px_rgba(168,85,247,0.5)] transition-all transform hover:-translate-y-0.5 disabled:opacity-50 mt-2 shadow-lg shadow-purple-500/20"
               >
-                <span>{sending ? 'Sending...' : 'Send Request'}</span>
+                <span>
+                  {sending ? 'Sending...' : (offeredProductId ? 'Send Exchange Request' : 'Send Direct Request')}
+                </span>
                 {!sending && <Send size={20} className="ml-1" />}
               </button>
             </form>

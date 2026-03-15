@@ -50,11 +50,12 @@ def create_exchange_request(db: Session, request_data: ExchangeRequestCreate, us
     
     # Notify product owner
     requester_name = db.query(User).filter(User.id == user_id).first().name
+    request_type = "exchange" if request_data.offered_product_id else "direct purchase"
     create_notification(
         db=db,
         user_id=product.owner_id,
         type="exchange_request",
-        message=f"{requester_name} has requested an exchange for your item '{product.title}'.",
+        message=f"{requester_name} has sent a {request_type} request for your item '{product.title}'.",
         related_id=exchange_req.id
     )
     
