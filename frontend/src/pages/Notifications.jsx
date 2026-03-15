@@ -42,26 +42,29 @@ export default function Notifications() {
 
   const getIcon = (type) => {
     switch(type) {
-      case 'exchange_request': return <RefreshCcw className="text-blue-400 w-6 h-6" />;
-      case 'exchange_accepted': return <Check className="text-green-400 w-6 h-6" />;
-      case 'exchange_rejected': return <Package className="text-red-400 w-6 h-6" />;
-      case 'exchange_scheduled': return <Bell className="text-purple-400 w-6 h-6" />;
-      case 'message': return <MessageSquare className="text-indigo-400 w-6 h-6" />;
-      default: return <Bell className="text-white/50 w-6 h-6" />;
+      case 'exchange_request': return <RefreshCcw className="text-slate-900 w-6 h-6" />;
+      case 'exchange_accepted': return <Check className="text-slate-900 w-6 h-6" />;
+      case 'exchange_rejected': return <X className="text-slate-400 w-6 h-6" />;
+      case 'exchange_scheduled': return <Bell className="text-slate-900 w-6 h-6" />;
+      case 'message': return <MessageSquare className="text-slate-900 w-6 h-6" />;
+      default: return <Bell className="text-slate-300 w-6 h-6" />;
     }
   };
 
-  if (loading) return <div className="flex justify-center py-20"><Loader2 className="w-10 h-10 animate-spin text-blue-500" /></div>;
+  if (loading) return <div className="flex justify-center py-32"><Loader2 className="w-12 h-12 animate-spin text-slate-900" /></div>;
 
   return (
     <div className="max-w-4xl mx-auto py-8 px-4">
       <Helmet><title>Notifications | CampusXchange</title></Helmet>
       
-      <div className="flex items-center space-x-3 mb-8">
-        <div className="w-12 h-12 bg-white/10 rounded-2xl flex items-center justify-center text-blue-400 border border-white/20">
-          <Bell size={24} />
+      <div className="flex items-center space-x-6 mb-12 pb-8 border-b border-slate-100">
+        <div className="w-16 h-16 bg-slate-900 rounded-[2rem] flex items-center justify-center text-white shadow-2xl rotate-3">
+          <Bell size={28} className="-rotate-3" />
         </div>
-        <h1 className="text-3xl font-extrabold text-white">Notifications</h1>
+        <div>
+          <h1 className="text-4xl font-black text-slate-900 tracking-tighter lowercase">your feed</h1>
+          <p className="text-slate-400 mt-1 font-black uppercase tracking-widest text-[10px]">Stay updated on your exchanges.</p>
+        </div>
       </div>
 
       <div className="space-y-4">
@@ -70,26 +73,31 @@ export default function Notifications() {
             <div 
               key={notif.id} 
               onClick={() => handleNotificationClick(notif)}
-              className={`flex items-start gap-4 p-5 rounded-2xl border transition-all cursor-pointer hover:shadow-lg hover:shadow-blue-500/10 ${notif.is_read ? 'bg-white/5 border-white/10' : 'bg-blue-900/40 border-blue-500/30'}`}
+              className={`flex items-start gap-5 p-8 rounded-[2.5rem] border transition-all cursor-pointer hover:shadow-2xl hover:scale-[1.01] ${notif.is_read ? 'bg-white/50 border-slate-100 hover:border-slate-200' : 'bg-white border-slate-200 shadow-2xl'}`}
             >
-              <div className="flex-shrink-0 mt-1">
+              <div className={`p-4 rounded-3xl flex-shrink-0 transition-colors ${notif.is_read ? 'bg-slate-50' : 'bg-slate-900 text-white'}`}>
                 {getIcon(notif.type)}
               </div>
               <div className="flex-1">
-                <p className={`text-sm md:text-base ${notif.is_read ? 'text-white/60 font-medium' : 'text-white font-bold'}`}>
+                <p className={`text-sm md:text-base leading-relaxed ${notif.is_read ? 'text-slate-500 font-medium' : 'text-slate-900 font-black'}`}>
                   {notif.message}
                 </p>
-                <span className="text-xs text-white/40 mt-2 block font-medium">
-                  {new Date(notif.created_at).toLocaleString()}
-                </span>
+                <div className="flex items-center gap-2 mt-4">
+                   <span className="text-[9px] text-slate-400 font-black uppercase tracking-widest bg-slate-50 px-3 py-1 rounded-full border border-slate-100">
+                     {new Date(notif.created_at).toLocaleDateString()} @ {new Date(notif.created_at).toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' })}
+                   </span>
+                </div>
               </div>
-              {!notif.is_read && <div className="w-3 h-3 bg-blue-500 rounded-full mt-2 shadow-[0_0_8px_rgba(59,130,246,0.8)]"></div>}
+              {!notif.is_read && <div className="w-3 h-3 bg-slate-900 rounded-full mt-4 shadow-xl"></div>}
             </div>
           ))
         ) : (
-          <div className="text-center py-20 bg-white/5 rounded-3xl border border-white/10">
-            <Bell className="w-12 h-12 text-white/20 mx-auto mb-4" />
-            <p className="text-white/50 font-medium">You're all caught up!</p>
+          <div className="text-center py-24 glass-card bg-white/70 border-slate-200 rounded-[3rem] shadow-xl">
+            <div className="w-20 h-20 bg-slate-50 rounded-full flex items-center justify-center mx-auto mb-6 border border-slate-100">
+               <Bell className="w-10 h-10 text-slate-200" />
+            </div>
+            <h2 className="text-xl font-black text-slate-900 mb-2">You're all caught up!</h2>
+            <p className="text-slate-500 font-bold">New alerts will appear here as they arrive.</p>
           </div>
         )}
       </div>

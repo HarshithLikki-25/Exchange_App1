@@ -81,7 +81,7 @@ export default function Dashboard() {
   };
 
   if (loading) {
-    return <div className="flex justify-center py-20"><Loader2 className="animate-spin text-blue-500 w-10 h-10" /></div>;
+    return <div className="flex justify-center py-32"><Loader2 className="animate-spin text-slate-900 w-12 h-12" /></div>;
   }
 
   // Pre-calculate tab counts
@@ -93,55 +93,55 @@ export default function Dashboard() {
       <Helmet><title>Dashboard | CampusXchange</title></Helmet>
       
       {/* Profile Header */}
-      <div className="glass-card p-8 flex flex-col md:flex-row items-center md:items-start gap-8 relative overflow-hidden">
-        <div className="w-24 h-24 bg-gradient-to-tr from-blue-500 to-purple-500 rounded-full flex items-center justify-center shadow-[0_0_30px_rgba(59,130,246,0.5)] text-white shrink-0">
-          <span className="text-4xl font-extrabold">{user?.name ? user.name[0].toUpperCase() : 'U'}</span>
+      <div className="glass-card p-10 flex flex-col md:flex-row items-center md:items-start gap-10 relative overflow-hidden bg-white/70 border-slate-200 shadow-xl">
+        <div className="w-28 h-28 bg-slate-900 rounded-3xl flex items-center justify-center shadow-2xl text-white shrink-0 rotate-3 transition-transform hover:rotate-0 duration-500">
+          <span className="text-5xl font-black -rotate-3 group-hover:rotate-0 transition-transform">{user?.name ? user.name[0].toUpperCase() : 'U'}</span>
         </div>
         
-        <div className="flex-grow text-center md:text-left">
-          <h1 className="text-3xl font-extrabold text-white">{user?.name}</h1>
-          <p className="text-white/50 font-medium mb-4">{user?.email}</p>
+        <div className="flex-grow text-center md:text-left mt-2">
+          <h1 className="text-4xl font-black text-slate-900 tracking-tight">{user?.name}</h1>
+          <p className="text-slate-500 font-bold mb-6 text-lg">{user?.email}</p>
           
-          <div className="flex flex-wrap justify-center md:justify-start gap-4 text-sm text-white/70">
+          <div className="flex flex-wrap justify-center md:justify-start gap-3 text-[10px] font-black uppercase tracking-widest text-slate-400">
              {user?.college && (
-               <span className="bg-white/5 px-3 py-1.5 rounded-lg border border-white/10 flex items-center">
-                 <User size={16} className="mr-2 text-blue-400" /> {user.college}
+               <span className="bg-slate-50 px-4 py-2 rounded-xl border border-slate-100 flex items-center shadow-sm">
+                 <GraduationCap size={14} className="mr-2 text-slate-900" /> {user.college}
                </span>
              )}
              {user?.location && (
-               <span className="bg-white/5 px-3 py-1.5 rounded-lg border border-white/10 flex items-center">
-                 <User size={16} className="mr-2 text-purple-400" /> {user.location}
+               <span className="bg-slate-50 px-4 py-2 rounded-xl border border-slate-100 flex items-center shadow-sm">
+                 <MapPin size={14} className="mr-2 text-slate-900" /> {user.location}
                </span>
              )}
-             <span className="bg-white/5 px-3 py-1.5 rounded-lg border border-white/10 flex items-center">
-                 <Calendar size={16} className="mr-2 text-green-400" /> Joined {new Date(user?.created_at).toLocaleDateString()}
+             <span className="bg-slate-50 px-4 py-2 rounded-xl border border-slate-100 flex items-center shadow-sm">
+                 <Calendar size={14} className="mr-2 text-slate-900" /> Joined {new Date(user?.created_at).toLocaleDateString()}
                </span>
           </div>
         </div>
       </div>
 
       {/* Tabs */}
-      <div className="flex space-x-2 border-b border-white/10 overflow-x-auto overflow-y-hidden pb-1 no-scrollbar">
+      <div className="flex space-x-2 border-b border-slate-100 overflow-x-auto overflow-y-hidden pb-1 no-scrollbar">
         <button 
           onClick={() => setActiveTab('listings')}
-          className={`pb-4 px-4 text-sm font-bold flex items-center transition-colors relative whitespace-nowrap ${activeTab === 'listings' ? 'text-blue-400' : 'text-white/50 hover:text-white'}`}
+          className={`pb-4 px-6 text-[10px] font-black uppercase tracking-widest flex items-center transition-all relative whitespace-nowrap ${activeTab === 'listings' ? 'text-slate-900' : 'text-slate-400 hover:text-slate-600'}`}
         >
-          <Package size={18} className="mr-2" /> My Listings ({products.length})
-          {activeTab === 'listings' && <span className="absolute bottom-0 left-0 w-full h-0.5 bg-blue-500 rounded-t-lg shadow-[0_0_8px_rgba(59,130,246,0.8)]"></span>}
+          <Package size={16} className="mr-2" /> My Listings ({products.length})
+          {activeTab === 'listings' && <motion.span layoutId="tab-underline" className="absolute bottom-0 left-0 w-full h-1 bg-slate-900 rounded-t-full shadow-lg"></motion.span>}
         </button>
         <button 
           onClick={() => setActiveTab('requests')}
-          className={`pb-4 px-4 text-sm font-bold flex items-center transition-colors relative whitespace-nowrap ${activeTab === 'requests' ? 'text-purple-400' : 'text-white/50 hover:text-white'}`}
+          className={`pb-4 px-6 text-[10px] font-black uppercase tracking-widest flex items-center transition-all relative whitespace-nowrap ${activeTab === 'requests' ? 'text-slate-900' : 'text-slate-400 hover:text-slate-600'}`}
         >
-          <MessageSquare size={18} className="mr-2" /> Exchange Requests {requestsCount > 0 && <span className="ml-1 bg-purple-500 text-white text-xs px-1.5 py-0.5 rounded-full">{requestsCount}</span>}
-          {activeTab === 'requests' && <span className="absolute bottom-0 left-0 w-full h-0.5 bg-purple-500 rounded-t-lg shadow-[0_0_8px_rgba(168,85,247,0.8)]"></span>}
+          <MessageSquare size={16} className="mr-2" /> Exchange Requests {requestsCount > 0 && <span className="ml-1 bg-slate-900 text-white text-[9px] px-2 py-0.5 rounded-full">{requestsCount}</span>}
+          {activeTab === 'requests' && <motion.span layoutId="tab-underline" className="absolute bottom-0 left-0 w-full h-1 bg-slate-900 rounded-t-full shadow-lg"></motion.span>}
         </button>
         <button 
           onClick={() => setActiveTab('schedules')}
-          className={`pb-4 px-4 text-sm font-bold flex items-center transition-colors relative whitespace-nowrap ${activeTab === 'schedules' ? 'text-green-400' : 'text-white/50 hover:text-white'}`}
+          className={`pb-4 px-6 text-[10px] font-black uppercase tracking-widest flex items-center transition-all relative whitespace-nowrap ${activeTab === 'schedules' ? 'text-slate-900' : 'text-slate-400 hover:text-slate-600'}`}
         >
-          <CalendarClock size={18} className="mr-2" /> Scheduled Pickups {schedulesCount > 0 && <span className="ml-1 bg-green-500 text-white text-xs px-1.5 py-0.5 rounded-full">{schedulesCount}</span>}
-          {activeTab === 'schedules' && <span className="absolute bottom-0 left-0 w-full h-0.5 bg-green-500 rounded-t-lg shadow-[0_0_8px_rgba(34,197,94,0.8)]"></span>}
+          <CalendarClock size={16} className="mr-2" /> Scheduled Pickups {schedulesCount > 0 && <span className="ml-1 bg-slate-900 text-white text-[9px] px-2 py-0.5 rounded-full">{schedulesCount}</span>}
+          {activeTab === 'schedules' && <motion.span layoutId="tab-underline" className="absolute bottom-0 left-0 w-full h-1 bg-slate-900 rounded-t-full shadow-lg"></motion.span>}
         </button>
       </div>
 
@@ -156,9 +156,10 @@ export default function Dashboard() {
               ))}
             </div>
           ) : (
-            <div className="text-center py-20 glass-card">
-              <Package className="w-12 h-12 text-white/20 mx-auto mb-4" />
-              <p className="text-white/50">You haven't posted any items yet.</p>
+            <div className="text-center py-24 glass-card bg-white/70 border-slate-200">
+              <Package className="w-16 h-16 text-slate-100 mx-auto mb-6" />
+              <p className="text-slate-400 font-extrabold text-sm uppercase tracking-widest mb-6">You haven't posted any items yet.</p>
+              <button onClick={() => navigate('/market')} className="bg-slate-900 text-white px-10 py-4 rounded-full font-black text-xs uppercase tracking-widest shadow-2xl hover:bg-black transition-all">Post Your First Item</button>
             </div>
           )
         )}
@@ -170,96 +171,98 @@ export default function Dashboard() {
               requests.map(req => {
                 const hasSchedule = schedules.some(s => s.exchange_request_id === req.id && s.status !== 'rejected');
                 return (
-                <div key={req.id} className="glass-card p-5 border-l-4 border-l-blue-500 shadow-sm mb-4">
-                  <div className="flex flex-col sm:flex-row justify-between sm:items-center gap-4">
+                <div key={req.id} className="glass-card p-6 border-l-4 border-l-slate-900 shadow-xl mb-6 bg-white/70 border border-slate-200">
+                  <div className="flex flex-col sm:flex-row justify-between sm:items-center gap-6">
                     <div className="flex-1">
-                      <h4 className="font-bold text-white mb-1">Request #{req.id} for Product #{req.product_id}</h4>
+                      <h4 className="font-black text-slate-900 text-lg mb-2 tracking-tight">Request #{req.id} <span className="text-slate-300">/</span> {req.product_title || `Product #${req.product_id}`}</h4>
                       {req.offered_product_id ? (
-                         <p className="text-sm text-blue-400 font-semibold mb-2 flex items-center gap-1">
-                           <Package size={14}/> User offered Product #{req.offered_product_id}
+                         <p className="text-[10px] text-slate-900 font-black uppercase tracking-widest mb-3 flex items-center gap-1.5">
+                           <Package size={14} className="text-slate-900"/> User offered Product #{req.offered_product_id}
                          </p>
                       ) : (
-                         <p className="text-sm text-purple-400 font-semibold mb-2 flex items-center gap-1">
-                           <Tag size={14}/> Direct Purchase Request
+                         <p className="text-[10px] text-slate-400 font-black uppercase tracking-widest mb-3 flex items-center gap-1.5">
+                           <Tag size={14} className="text-slate-400"/> Direct Purchase Request
                          </p>
                       )}
-                      <p className="text-white/60 text-sm italic border-l-2 border-white/20 pl-3 my-2 space-y-1 bg-white/5 p-2 rounded-r-lg">
+                      <div className="text-slate-600 text-sm italic border-l-4 border-slate-200 pl-4 my-4 bg-slate-50/50 p-4 rounded-r-2xl font-medium">
                         "{req.message}"
+                      </div>
+                      <p className="text-xs text-slate-400 font-bold flex items-center">
+                        <Calendar size={12} className="mr-1"/> Sent on {new Date(req.created_at).toLocaleDateString()}
                       </p>
-                      <p className="text-xs text-white/40 font-medium">Sent on {new Date(req.created_at).toLocaleDateString()}</p>
                     </div>
                     <div className="flex flex-col items-end gap-2">
-                       <span className={`px-3 py-1 rounded-full text-xs font-bold capitalize ${
-                        req.status === 'pending' ? 'bg-yellow-500/20 text-yellow-300 border border-yellow-500/30' : 
-                        req.status === 'accepted' ? 'bg-green-500/20 text-green-300 border border-green-500/30' : 
-                        'bg-red-500/20 text-red-300 border border-red-500/30'
+                      <span className={`px-4 py-1.5 rounded-full text-[10px] font-black uppercase tracking-wider ${
+                        req.status === 'pending' ? 'bg-amber-100 text-amber-700 border border-amber-200' : 
+                        req.status === 'accepted' ? 'bg-emerald-100 text-emerald-700 border border-emerald-200' : 
+                        'bg-rose-100 text-rose-700 border border-rose-200'
                       }`}>
                         {req.status}
                       </span>
                       
                       {/* Actions for Pending */}
                       {req.status === 'pending' && req.requested_by !== user.id && (
-                        <div className="flex gap-2 mt-2">
-                          <button onClick={() => handleRequestStatusChange(req.id, 'accepted')} className="p-2 bg-green-500/20 text-green-400 border border-green-500/30 rounded-full hover:bg-green-500/30 transition shadow-[0_0_10px_rgba(34,197,94,0.2)]" title="Accept"><Check size={16}/></button>
-                          <button onClick={() => handleRequestStatusChange(req.id, 'rejected')} className="p-2 bg-red-500/20 text-red-400 border border-red-500/30 rounded-full hover:bg-red-500/30 transition shadow-[0_0_10px_rgba(239,68,68,0.2)]" title="Reject"><X size={16}/></button>
+                        <div className="flex gap-3 mt-4">
+                          <button onClick={() => handleRequestStatusChange(req.id, 'accepted')} className="p-3 bg-emerald-50 text-emerald-600 border border-emerald-100 rounded-2xl hover:bg-emerald-100 transition shadow-sm" title="Accept"><Check size={20}/></button>
+                          <button onClick={() => handleRequestStatusChange(req.id, 'rejected')} className="p-3 bg-rose-50 text-rose-600 border border-rose-100 rounded-2xl hover:bg-rose-100 transition shadow-sm" title="Reject"><X size={20}/></button>
                         </div>
                       )}
 
                       {/* Action for Accepted (Schedule) */}
                       {req.status === 'accepted' && scheduleData.reqId !== req.id && !hasSchedule && (
-                        <button onClick={() => setScheduleData({ ...scheduleData, reqId: req.id })} className="mt-2 text-xs font-bold bg-blue-600 text-white px-4 py-2 rounded-lg hover:bg-blue-500 transition shadow-[0_0_15px_rgba(37,99,235,0.4)]">
+                        <button onClick={() => setScheduleData({ ...scheduleData, reqId: req.id })} className="mt-4 text-[10px] font-black bg-slate-900 text-white px-6 py-3 rounded-2xl hover:bg-black transition shadow-2xl tracking-widest uppercase">
                           Propose Schedule
                         </button>
                       )}
                       {hasSchedule && (
-                        <span className="text-xs text-green-400 font-bold mt-2">Schedule Proposed! check tab</span>
+                        <span className="text-xs text-emerald-600 font-black mt-4 bg-emerald-50 px-3 py-1 rounded-lg">Schedule Proposed!</span>
                       )}
                     </div>
                   </div>
 
                   {/* Scheduling Form Dropdown */}
                   {scheduleData.reqId === req.id && (
-                    <form onSubmit={handleScheduleSubmit} className="mt-5 p-5 bg-black/20 border border-white/10 rounded-xl space-y-4">
-                      <h5 className="font-bold text-sm text-white flex items-center"><Calendar size={16} className="mr-2 text-blue-400"/> Propose Meetup</h5>
+                    <form onSubmit={handleScheduleSubmit} className="mt-8 p-8 bg-slate-50 border border-slate-100 rounded-[2rem] space-y-8 shadow-inner">
+                      <h5 className="font-black text-xl text-slate-900 flex items-center tracking-tight lowercase"><CalendarClock size={24} className="mr-3 text-slate-900"/> propose meetup</h5>
                       
-                      <div className="grid grid-cols-1 md:grid-cols-2 gap-3">
+                      <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
                         <div>
-                          <label className="text-white/50 text-xs font-bold mb-1 block">Type</label>
-                          <select value={scheduleData.pickup_or_delivery} onChange={e => setScheduleData({...scheduleData, pickup_or_delivery: e.target.value})} className="w-full p-2.5 text-sm bg-white/5 border border-white/10 rounded-lg text-white appearance-none outline-none focus:border-blue-500" required>
-                            <option value="pickup" className="bg-slate-900">Pickup</option>
-                            <option value="delivery" className="bg-slate-900">Delivery / Meetup</option>
+                          <label className="text-slate-400 text-[10px] font-black uppercase tracking-widest mb-3 block">Type</label>
+                          <select value={scheduleData.pickup_or_delivery} onChange={e => setScheduleData({...scheduleData, pickup_or_delivery: e.target.value})} className="w-full p-4 text-sm bg-white border border-slate-100 rounded-2xl text-slate-800 font-bold outline-none focus:ring-4 focus:ring-slate-900/5 focus:border-slate-300 transition-all cursor-pointer appearance-none" required>
+                            <option value="pickup">Pickup (You go to them)</option>
+                            <option value="delivery">Delivery / Meetup (Shared location)</option>
                           </select>
                         </div>
                         <div>
-                          <label className="text-white/50 text-xs font-bold mb-1 block">Date</label>
-                          <input type="date" value={scheduleData.date} onChange={e => setScheduleData({...scheduleData, date: e.target.value})} className="w-full p-2.5 text-sm bg-white/5 border border-white/10 rounded-lg text-white outline-none focus:border-blue-500" required />
+                          <label className="text-slate-400 text-[10px] font-black uppercase tracking-widest mb-3 block">Date</label>
+                          <input type="date" value={scheduleData.date} onChange={e => setScheduleData({...scheduleData, date: e.target.value})} className="w-full p-4 text-sm bg-white border border-slate-100 rounded-2xl text-slate-800 font-bold outline-none focus:ring-4 focus:ring-slate-900/5 focus:border-slate-300 transition-all" required />
                         </div>
                         <div className="md:col-span-2">
-                          <label className="text-white/50 text-xs font-bold mb-1 block">Location</label>
-                          <input type="text" placeholder="e.g. Student Union, Main Entrance" value={scheduleData.location} onChange={e => setScheduleData({...scheduleData, location: e.target.value})} className="w-full p-2.5 text-sm bg-white/5 border border-white/10 rounded-lg text-white placeholder-white/30 outline-none focus:border-blue-500" required />
+                          <label className="text-slate-400 text-[10px] font-black uppercase tracking-widest mb-3 block">Location</label>
+                          <input type="text" placeholder="e.g. Student Union, Main Entrance" value={scheduleData.location} onChange={e => setScheduleData({...scheduleData, location: e.target.value})} className="w-full p-4 text-sm bg-white border border-slate-100 rounded-2xl text-slate-800 placeholder-slate-400 font-black outline-none focus:ring-4 focus:ring-slate-900/5 focus:border-slate-300 transition-all shadow-sm" required />
                         </div>
                         <div className="md:col-span-2">
-                          <label className="text-white/50 text-xs font-bold mb-1 block">Time Slot</label>
-                          <input type="text" placeholder="e.g. 2:00 PM - 2:30 PM" value={scheduleData.time_slot} onChange={e => setScheduleData({...scheduleData, time_slot: e.target.value})} className="w-full p-2.5 text-sm bg-white/5 border border-white/10 rounded-lg text-white placeholder-white/30 outline-none focus:border-blue-500" required />
+                          <label className="text-slate-400 text-[10px] font-black uppercase tracking-widest mb-3 block">Time Slot</label>
+                          <input type="text" placeholder="e.g. 2:00 PM - 2:30 PM" value={scheduleData.time_slot} onChange={e => setScheduleData({...scheduleData, time_slot: e.target.value})} className="w-full p-4 text-sm bg-white border border-slate-100 rounded-2xl text-slate-800 placeholder-slate-400 font-black outline-none focus:ring-4 focus:ring-slate-900/5 focus:border-slate-300 transition-all shadow-sm" required />
                         </div>
                         <div className="md:col-span-2">
-                          <label className="text-white/50 text-xs font-bold mb-1 block flex items-center gap-1"><Info size={12}/> Notes / Description</label>
-                          <textarea placeholder="e.g. I will be wearing a red jacket." value={scheduleData.description} onChange={e => setScheduleData({...scheduleData, description: e.target.value})} className="w-full p-2.5 text-sm bg-white/5 border border-white/10 rounded-lg text-white placeholder-white/30 outline-none focus:border-blue-500 resize-none h-16" />
+                          <label className="text-slate-400 text-[10px] font-black uppercase tracking-widest mb-3 block flex items-center gap-1"><Info size={12}/> Notes / Description</label>
+                          <textarea placeholder="e.g. I will be wearing a black jacket." value={scheduleData.description} onChange={e => setScheduleData({...scheduleData, description: e.target.value})} className="w-full p-4 text-sm bg-white border border-slate-100 rounded-2xl text-slate-800 placeholder-slate-400 font-medium outline-none focus:ring-4 focus:ring-slate-900/5 focus:border-slate-300 transition-all shadow-sm resize-none h-24" />
                         </div>
                       </div>
 
-                      <div className="flex gap-3 justify-end pt-2">
-                        <button type="button" onClick={() => setScheduleData({...scheduleData, reqId: null})} className="text-white/60 text-sm font-bold px-4 py-2 hover:bg-white/5 rounded-lg transition">Cancel</button>
-                        <button type="submit" disabled={scheduling} className="bg-gradient-to-r from-blue-600 to-purple-600 text-white text-sm font-bold px-5 py-2 rounded-lg shadow-lg hover:shadow-blue-500/40 hover:-translate-y-0.5 transition disabled:opacity-50">Send Proposal</button>
+                      <div className="flex gap-4 justify-end pt-4">
+                        <button type="button" onClick={() => setScheduleData({...scheduleData, reqId: null})} className="text-slate-400 text-[10px] font-black uppercase tracking-widest px-8 py-3 hover:bg-slate-100 rounded-xl transition-all">Cancel</button>
+                        <button type="submit" disabled={scheduling} className="bg-slate-900 text-white text-[10px] font-black uppercase tracking-widest px-10 py-4 rounded-2xl shadow-2xl hover:scale-105 transition-all disabled:opacity-50">Send Proposal</button>
                       </div>
                     </form>
                   )}
                 </div>
               )})
             ) : (
-              <div className="text-center py-20 glass-card">
-                <MessageSquare className="w-12 h-12 text-white/20 mx-auto mb-4" />
-                <p className="text-white/50">No exchange requests found.</p>
+            <div className="text-center py-24 glass-card bg-white/70 border-slate-200">
+                <MessageSquare className="w-16 h-16 text-slate-200 mx-auto mb-6" />
+                <p className="text-slate-500 font-bold text-lg">No exchange requests found.</p>
               </div>
             )}
           </div>
@@ -276,47 +279,52 @@ export default function Dashboard() {
                 // In a perfect system we'd track 'proposed_by'.
                 // Here we just show it for pending status.
                 return (
-                <div key={schedule.id} className="glass-card p-5 border-l-4 border-l-green-400 shadow-[0_4px_20px_rgba(0,0,0,0.2)] mb-4 bg-gradient-to-br from-white/5 to-white/0">
-                  <div className="flex flex-col sm:flex-row justify-between sm:items-center gap-4">
+                <div key={schedule.id} className="glass-card p-8 border-l-4 border-l-slate-900 shadow-xl mb-6 bg-white/70 border border-slate-200 relative overflow-hidden">
+                  <div className="flex flex-col sm:flex-row justify-between sm:items-center gap-6">
                     <div className="flex-1">
-                      <h4 className="font-bold text-white mb-2 flex items-center gap-2">
-                        <CalendarClock size={20} className="text-green-400"/> 
+                      <h4 className="font-black text-slate-900 text-xl mb-4 flex items-center gap-3">
+                        <CalendarClock size={24} className="text-blue-600"/> 
                         Meetup for Request #{schedule.exchange_request_id}
                       </h4>
                       
-                      <div className="grid grid-cols-2 gap-y-2 gap-x-4 text-sm mt-3 bg-black/20 p-3 rounded-lg border border-white/5">
-                        <div className="text-white/60"><MapPin size={14} className="inline mr-1 text-purple-400"/> Location</div>
-                        <div className="text-white font-medium">{schedule.location}</div>
+                      <div className="grid grid-cols-1 sm:grid-cols-3 gap-4 text-sm mt-6 bg-slate-50/50 p-6 rounded-2xl border border-slate-100 shadow-inner">
+                        <div>
+                          <div className="text-slate-400 mb-1 font-black uppercase text-[10px] tracking-widest flex items-center"><MapPin size={12} className="mr-1 text-blue-600"/> Location</div>
+                          <div className="text-slate-800 font-black">{schedule.location}</div>
+                        </div>
                         
-                        <div className="text-white/60"><Calendar size={14} className="inline mr-1 text-blue-400"/> Date & Time</div>
-                        <div className="text-white font-medium">{schedule.date} @ {schedule.time_slot}</div>
+                        <div>
+                          <div className="text-slate-400 mb-1 font-black uppercase text-[10px] tracking-widest flex items-center"><Calendar size={12} className="mr-1 text-indigo-600"/> Date & Time</div>
+                          <div className="text-slate-800 font-black">{schedule.date} @ {schedule.time_slot}</div>
+                        </div>
                         
-                        <div className="text-white/60"><Package size={14} className="inline mr-1 text-green-400"/> Method</div>
-                        <div className="text-white font-medium capitalize">{schedule.pickup_or_delivery}</div>
+                        <div>
+                          <div className="text-slate-400 mb-1 font-black uppercase text-[10px] tracking-widest flex items-center"><Package size={12} className="mr-1 text-blue-400"/> Method</div>
+                          <div className="text-slate-800 font-black capitalize">{schedule.pickup_or_delivery}</div>
+                        </div>
                       </div>
 
                       {schedule.description && (
-                         <div className="mt-3 text-sm text-white/80 bg-white/5 border border-white/10 p-3 rounded-lg flex items-start gap-2">
-                           <Info size={16} className="text-blue-400 mt-0.5 shrink-0" />
-                           <p>"{schedule.description}"</p>
+                         <div className="mt-4 text-sm text-slate-600 bg-slate-50 border border-slate-100 p-4 rounded-2xl flex items-start gap-3">
+                           <Info size={18} className="text-slate-900 mt-0.5 shrink-0" />
+                           <p className="font-medium italic">"{schedule.description}"</p>
                          </div>
                       )}
-                      
                     </div>
-                    <div className="flex flex-col items-end gap-3 justify-center min-w-[120px]">
-                       <span className={`px-4 py-1.5 rounded-full text-xs font-extrabold tracking-wide uppercase ${
-                        schedule.status === 'pending' ? 'bg-yellow-500/20 text-yellow-300 border border-yellow-500/30 shadow-[0_0_10px_rgba(234,179,8,0.2)]' : 
-                        schedule.status === 'accepted' ? 'bg-green-500/20 text-green-300 border border-green-500/30 shadow-[0_0_10px_rgba(34,197,94,0.2)]' : 
-                        'bg-red-500/20 text-red-300 border border-red-500/30 shadow-[0_0_10px_rgba(239,68,68,0.2)]'
+                    <div className="flex flex-col items-end gap-4 justify-center min-w-[140px]">
+                       <span className={`px-5 py-2 rounded-full text-[10px] font-black tracking-widest uppercase ${
+                        schedule.status === 'pending' ? 'bg-amber-100 text-amber-700 border border-amber-200 shadow-sm' : 
+                        schedule.status === 'accepted' ? 'bg-emerald-100 text-emerald-700 border border-emerald-200 shadow-sm' : 
+                        'bg-rose-100 text-rose-700 border border-rose-200 shadow-sm'
                       }`}>
                         {schedule.status}
                       </span>
                       
                       {/* Negotiation / Accept / Reject */}
                       {schedule.status === 'pending' && (
-                        <div className="flex flex-col gap-2 w-full mt-2">
-                          <button onClick={() => handleScheduleStatusChange(schedule.id, 'accepted')} className="w-full text-xs font-bold py-2 bg-green-500/20 text-green-400 border border-green-500/40 rounded-lg hover:bg-green-500/40 transition">Accept Meetup</button>
-                          <button onClick={() => handleScheduleStatusChange(schedule.id, 'rejected')} className="w-full text-xs font-bold py-2 bg-red-500/20 text-red-400 border border-red-500/40 rounded-lg hover:bg-red-500/40 transition">Reject / Negotiate</button>
+                        <div className="flex flex-col gap-2 w-full">
+                          <button onClick={() => handleScheduleStatusChange(schedule.id, 'accepted')} className="w-full text-xs font-black py-3 bg-emerald-50 text-emerald-700 border border-emerald-200 rounded-xl hover:bg-emerald-100 transition-all">Accept Meetup</button>
+                          <button onClick={() => handleScheduleStatusChange(schedule.id, 'rejected')} className="w-full text-xs font-black py-3 bg-rose-50 text-rose-700 border border-rose-200 rounded-xl hover:bg-rose-100 transition-all">Negotiate</button>
                         </div>
                       )}
                     </div>
@@ -324,9 +332,9 @@ export default function Dashboard() {
                 </div>
               )})
             ) : (
-              <div className="text-center py-20 glass-card">
-                <CalendarClock className="w-12 h-12 text-white/20 mx-auto mb-4" />
-                <p className="text-white/50">No scheduled meetups yet.</p>
+            <div className="text-center py-24 glass-card bg-white/70 border-slate-200">
+                <CalendarClock className="w-16 h-16 text-slate-200 mx-auto mb-6" />
+                <p className="text-slate-500 font-bold text-lg">No scheduled meetups yet.</p>
               </div>
             )}
           </div>

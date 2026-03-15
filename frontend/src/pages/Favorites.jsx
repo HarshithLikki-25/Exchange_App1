@@ -37,19 +37,19 @@ export default function Favorites() {
   return (
     <div className="max-w-7xl mx-auto space-y-8 animate-in fade-in duration-500">
       
-      <div className="flex items-center space-x-3 mb-8 pb-4 border-b border-white/10">
-        <div className="p-3 bg-red-500/10 text-red-400 border border-red-500/20 rounded-xl shadow-inner">
-          <Heart size={28} className="fill-current" />
+      <div className="flex items-center space-x-6 mb-12 pb-8 border-b border-slate-100">
+        <div className="p-5 bg-slate-900 text-white rounded-[2rem] shadow-2xl rotate-3 transition-transform hover:rotate-0 duration-500">
+          <Heart size={36} className="fill-white -rotate-3 hover:rotate-0 transition-transform duration-500" />
         </div>
         <div>
-          <h1 className="text-3xl font-extrabold text-white tracking-tight">Your Favorites</h1>
-          <p className="text-white/50 mt-1">Items you're keeping an eye on.</p>
+          <h1 className="text-4xl font-black text-slate-900 tracking-tighter lowercase">your wishlist</h1>
+          <p className="text-slate-400 mt-1 font-black uppercase tracking-widest text-[10px]">Items you're keeping an eye on.</p>
         </div>
       </div>
 
       {loading ? (
-        <div className="flex justify-center py-20">
-          <Loader2 className="animate-spin text-blue-500 w-10 h-10" />
+        <div className="flex justify-center py-32">
+          <Loader2 className="animate-spin text-slate-900 w-12 h-12" />
         </div>
       ) : favorites.length > 0 ? (
         <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-6">
@@ -63,12 +63,12 @@ export default function Favorites() {
           ))}
         </div>
       ) : (
-        <div className="text-center py-24 glass-card rounded-3xl">
-          <div className="inline-flex items-center justify-center w-20 h-20 bg-white/5 border border-white/10 rounded-full mb-4">
-            <Heart size={32} className="text-white/20" />
+        <div className="text-center py-24 glass-card bg-white/70 border-slate-200 rounded-[3rem] shadow-2xl">
+          <div className="inline-flex items-center justify-center w-28 h-28 bg-slate-50 border border-slate-100 rounded-full mb-8">
+            <Heart size={44} className="text-slate-200" />
           </div>
-          <h2 className="text-2xl font-bold text-white mb-2">No favorites yet</h2>
-          <p className="text-white/50">When you see an item you like, click the heart icon to save it here.</p>
+          <h2 className="text-2xl font-black text-slate-900 mb-2 tracking-tighter lowercase">no favorites yet</h2>
+          <p className="text-slate-400 font-black uppercase tracking-widest text-[10px] max-w-xs mx-auto leading-relaxed">When you see an item you like, click the heart icon to save it here.</p>
         </div>
       )}
     </div>

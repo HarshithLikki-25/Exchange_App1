@@ -4,13 +4,13 @@
 
 @layer base {
   body {
-    @apply text-white font-sans min-h-screen bg-fixed;
-    background: linear-gradient(135deg, #0f172a 0%, #1e1b4b 40%, #1e3a8a 70%, #0f172a 100%);
+    @apply text-neutral-900 font-sans min-h-screen bg-fixed;
+    background: radial-gradient(circle at top left, #ffffff 0%, #fafafa 40%, #f0f0f0 100%);
   }
 }
 
 @layer utilities {
   .glass-card {
-    @apply bg-white/5 backdrop-blur-md border border-white/10 shadow-xl rounded-2xl;
+    @apply bg-white/70 backdrop-blur-lg border border-white/40 shadow-xl rounded-3xl;
   }
 }

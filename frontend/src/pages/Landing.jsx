@@ -21,7 +21,7 @@ function PublicProductCard({ product }) {
       animate={{ opacity: 1, y: 0 }}
       whileHover={{ y: -6, scale: 1.02 }}
       transition={{ duration: 0.25 }}
-      className="bg-white/5 border border-white/10 backdrop-blur-sm rounded-2xl overflow-hidden flex flex-col group hover:bg-white/10 hover:border-white/20 hover:shadow-2xl hover:shadow-blue-500/10 transition-all duration-300"
+      className="bg-white/70 border border-slate-200 backdrop-blur-sm rounded-2xl overflow-hidden flex flex-col group hover:bg-white/90 hover:border-slate-300 hover:shadow-2xl transition-all duration-300"
     >
       <div className="relative h-48 overflow-hidden">
         <Link to={`/product/${product.id}`}>
@@ -32,32 +32,32 @@ function PublicProductCard({ product }) {
           />
         </Link>
         {product.condition && (
-          <div className="absolute bottom-3 left-3 px-2.5 py-1 bg-black/60 backdrop-blur-md text-white text-xs font-semibold rounded-lg">
+          <div className="absolute bottom-3 left-3 px-2.5 py-1 bg-white/80 backdrop-blur-md text-slate-800 text-xs font-semibold rounded-lg border border-white/40">
             {product.condition}
           </div>
         )}
         {product.category && (
-          <div className="absolute top-3 right-3 px-2.5 py-1 bg-blue-500/80 backdrop-blur-md text-white text-xs font-semibold rounded-lg capitalize">
+          <div className="absolute top-3 right-3 px-2.5 py-1 bg-slate-900/80 backdrop-blur-md text-white text-[10px] font-black uppercase tracking-widest rounded-lg">
             {product.category}
           </div>
         )}
       </div>
       <div className="p-4 flex flex-col flex-grow">
         <Link to={`/product/${product.id}`}>
-          <h3 className="font-bold text-white text-base line-clamp-1 mb-1 hover:text-blue-300 transition-colors">
+          <h3 className="font-black text-slate-900 text-base line-clamp-1 mb-1 hover:text-slate-600 transition-colors">
             {product.title}
           </h3>
         </Link>
-        <p className="text-white/40 text-sm line-clamp-2 flex-grow mb-3">
+        <p className="text-slate-500 text-sm line-clamp-2 flex-grow mb-3">
           {product.description || 'No description provided.'}
         </p>
-        <div className="flex items-center justify-between text-xs text-white/30 pt-3 border-t border-white/10">
-          <div className="flex items-center gap-1">
-            <Tag size={12} />
-            <span className="capitalize">{product.category || 'Other'}</span>
+        <div className="flex items-center justify-between text-[10px] font-black text-slate-400 pt-3 border-t border-slate-100 uppercase tracking-widest">
+          <div className="flex items-center gap-1.5">
+            <Tag size={12} className="text-slate-900" />
+            <span>{product.category || 'Other'}</span>
           </div>
-          <div className="flex items-center gap-1">
-            <Clock size={12} />
+          <div className="flex items-center gap-1.5">
+            <Clock size={12} className="text-slate-900" />
             <span>{date}</span>
           </div>
         </div>
@@ -101,46 +101,46 @@ export default function Landing() {
   const hasActiveFilters = searchQuery || categoryFilter || conditionFilter;
 
   return (
-    <div className="min-h-screen font-sans" style={{ background: 'linear-gradient(135deg, #0f172a 0%, #1e1b4b 40%, #1e3a8a 70%, #0f172a 100%)' }}>
+    <div className="min-h-screen font-sans" style={{ background: 'linear-gradient(135deg, #f8fafc 0%, #f1f5f9 40%, #e2e8f0 100%)' }}>
       <Helmet>
         <title>CampusXchange | College Marketplace</title>
         <meta name="description" content="Buy, sell and exchange items with students on your campus." />
       </Helmet>
 
       {/* decorative blobs — full page */}
-      <div className="fixed top-0 right-0 w-[700px] h-[700px] bg-blue-500/10 rounded-full blur-3xl -translate-y-1/2 translate-x-1/3 pointer-events-none" />
-      <div className="fixed bottom-0 left-0 w-[500px] h-[500px] bg-purple-600/10 rounded-full blur-3xl translate-y-1/3 -translate-x-1/4 pointer-events-none" />
-      <div className="fixed top-1/2 left-1/2 w-[600px] h-[300px] bg-indigo-500/5 rounded-full blur-3xl -translate-x-1/2 pointer-events-none" />
+      <div className="fixed top-0 right-0 w-[700px] h-[700px] bg-slate-200/20 rounded-full blur-3xl -translate-y-1/2 translate-x-1/3 pointer-events-none" />
+      <div className="fixed bottom-0 left-0 w-[500px] h-[500px] bg-slate-300/10 rounded-full blur-3xl translate-y-1/3 -translate-x-1/4 pointer-events-none" />
+      <div className="fixed top-1/2 left-1/2 w-[600px] h-[300px] bg-slate-100/5 rounded-full blur-3xl -translate-x-1/2 pointer-events-none" />
       {/* dot grid overlay */}
-      <div className="fixed inset-0 opacity-[0.07] pointer-events-none" style={{ backgroundImage: 'radial-gradient(circle, #ffffff 1px, transparent 1px)', backgroundSize: '32px 32px' }} />
+      <div className="fixed inset-0 opacity-[0.03] pointer-events-none" style={{ backgroundImage: 'radial-gradient(circle, #000000 1px, transparent 1px)', backgroundSize: '32px 32px' }} />
 
       {/* ── HERO ── */}
-      <section className="relative pt-28 pb-20 px-6 text-white">
+      <section className="relative pt-28 pb-20 px-6 text-slate-900">
         <div className="max-w-5xl mx-auto text-center">
           <motion.div initial={{ opacity: 0, y: 30 }} animate={{ opacity: 1, y: 0 }} transition={{ duration: 0.75 }}>
-            <div className="inline-flex items-center gap-2 bg-white/10 border border-white/20 backdrop-blur-sm rounded-full px-4 py-1.5 text-sm font-semibold text-blue-200 mb-7">
-              <span className="w-2 h-2 rounded-full bg-green-400 animate-pulse" />
-              The #1 College Trading Platform
+            <div className="inline-flex items-center gap-2 bg-slate-100 border border-slate-200 rounded-full px-4 py-1.5 text-[10px] font-black text-slate-600 mb-7 uppercase tracking-[0.2em] shadow-sm">
+              <span className="w-2 h-2 rounded-full bg-slate-900" />
+              verified college trading
             </div>
-            <h1 className="text-5xl md:text-7xl font-extrabold tracking-tight leading-tight mb-5">
-              Trade Smarter,<br />
-              <span className="text-transparent bg-clip-text bg-gradient-to-r from-blue-400 to-purple-400">On Campus.</span>
+            <h1 className="text-6xl md:text-8.5xl font-black tracking-tighter leading-[0.9] mb-8 text-slate-900">
+              Trade Smarter.<br />
+              <span className="opacity-30">On Campus.</span>
             </h1>
-            <p className="text-lg md:text-xl text-white/60 max-w-2xl mx-auto mb-10">
-              CampusXchange connects college students to buy, sell, and exchange items — safely, locally, and for free.
+            <p className="text-lg md:text-xl text-slate-500 max-w-2xl mx-auto mb-12 font-medium leading-relaxed">
+              CampusXchange connects students to buy, sell, and exchange items — safely, locally, and reliably.
             </p>
-            <div className="flex flex-col sm:flex-row justify-center gap-4">
+            <div className="flex flex-col sm:flex-row justify-center gap-5">
               {user ? (
-                <Link to="/market" className="inline-flex items-center justify-center gap-2 px-8 py-4 bg-gradient-to-r from-blue-500 to-purple-500 rounded-2xl font-bold text-lg shadow-2xl shadow-blue-500/30 hover:scale-105 transition-transform duration-200">
-                  Go to Market <ArrowRight size={20} />
+                <Link to="/market" className="inline-flex items-center justify-center gap-2 px-10 py-5 bg-slate-900 rounded-full font-black text-xs uppercase tracking-widest text-white shadow-2xl hover:bg-black transition-all duration-300">
+                  Go to Market <ArrowRight size={18} />
                 </Link>
               ) : (
-                <Link to="/register" className="inline-flex items-center justify-center gap-2 px-8 py-4 bg-gradient-to-r from-blue-500 to-purple-500 rounded-2xl font-bold text-lg shadow-2xl shadow-blue-500/30 hover:scale-105 transition-transform duration-200">
-                  Start Trading <ArrowRight size={20} />
+                <Link to="/register" className="inline-flex items-center justify-center gap-2 px-10 py-5 bg-slate-900 rounded-full font-black text-xs uppercase tracking-widest text-white shadow-2xl hover:bg-black transition-all duration-300">
+                  Start Trading <ArrowRight size={18} />
                 </Link>
               )}
-              <a href="#marketplace" className="inline-flex items-center justify-center gap-2 px-8 py-4 bg-white/10 border border-white/20 backdrop-blur-sm rounded-2xl font-bold text-lg hover:bg-white/20 transition-colors duration-200">
-                Browse Items <Package size={20} />
+              <a href="#marketplace" className="inline-flex items-center justify-center gap-2 px-10 py-5 bg-white border border-slate-200 rounded-full font-black text-xs uppercase tracking-widest text-slate-900 hover:bg-slate-50 transition-all duration-300 shadow-sm">
+                Browse Items <Package size={18} />
               </a>
             </div>
           </motion.div>
@@ -153,10 +153,10 @@ export default function Landing() {
               { label: 'Items Listed', value: `${products.length}+`, icon: <Package size={18} /> },
               { label: 'Free to Use', value: '100%', icon: <Zap size={18} /> },
             ].map(({ label, value, icon }) => (
-              <div key={label} className="flex flex-col items-center bg-white/5 border border-white/10 rounded-2xl p-4 backdrop-blur-sm">
-                <div className="text-blue-300 mb-1">{icon}</div>
-                <div className="text-2xl font-extrabold text-white">{value}</div>
-                <div className="text-xs text-white/50 font-medium">{label}</div>
+              <div key={label} className="flex flex-col items-center bg-white border border-slate-100 rounded-3xl p-5 shadow-sm group hover:scale-105 transition-transform">
+                <div className="text-slate-900 mb-2 group-hover:scale-110 transition-transform">{icon}</div>
+                <div className="text-2xl font-black text-slate-900 tracking-tighter">{value}</div>
+                <div className="text-[10px] text-slate-400 font-black uppercase tracking-widest mt-1">{label}</div>
               </div>
             ))}
           </motion.div>
@@ -169,51 +169,51 @@ export default function Landing() {
         <div className="w-full h-px bg-gradient-to-r from-transparent via-white/10 to-transparent mb-14" />
 
         <div className="mb-8">
-          <h2 className="text-3xl md:text-4xl font-extrabold text-white mb-1">Browse Items</h2>
-          <p className="text-white/40">Explore what students on your campus are trading right now.</p>
+          <h2 className="text-3xl md:text-4xl font-extrabold text-slate-900 mb-1">Browse Items</h2>
+          <p className="text-slate-500 font-medium">Explore what students on your campus are trading right now.</p>
         </div>
 
         {/* Filters */}
-        <div className="bg-white/5 border border-white/10 backdrop-blur-md rounded-2xl p-3 md:p-4 flex flex-col md:flex-row gap-3 items-stretch md:items-center mb-8 sticky top-20 z-30">
+        <div className="bg-white/80 border border-slate-200 backdrop-blur-md rounded-2xl p-3 md:p-4 flex flex-col md:flex-row gap-3 items-stretch md:items-center mb-8 sticky top-20 z-30 shadow-sm">
           <div className="relative flex-1 min-w-0">
-            <Search size={16} className="absolute left-3 top-1/2 -translate-y-1/2 text-white/30" />
+            <Search size={16} className="absolute left-3 top-1/2 -translate-y-1/2 text-slate-400" />
             <input
               type="text"
               placeholder="Search products…"
               value={searchQuery}
               onChange={(e) => setSearchQuery(e.target.value)}
-              className="w-full pl-9 pr-4 py-2.5 bg-white/5 border border-white/10 rounded-xl text-sm text-white placeholder-white/30 focus:outline-none focus:ring-2 focus:ring-blue-500/40 focus:border-blue-400/50 transition-all font-medium"
+              className="w-full pl-9 pr-4 py-3 bg-slate-50 border border-slate-100 rounded-2xl text-sm text-slate-800 placeholder-slate-400 focus:outline-none focus:ring-4 focus:ring-slate-900/5 focus:border-slate-300 transition-all font-medium"
             />
           </div>
           <div className="flex flex-wrap gap-2">
-            <div className="flex items-center gap-1.5 bg-white/5 border border-white/10 rounded-xl px-3 py-2">
-              <Filter size={14} className="text-white/30 shrink-0" />
+            <div className="flex items-center gap-1.5 bg-slate-50 border border-slate-200 rounded-xl px-3 py-2">
+              <Filter size={14} className="text-slate-400 shrink-0" />
               <select value={categoryFilter} onChange={(e) => setCategoryFilter(e.target.value)}
-                className="bg-transparent text-sm font-medium text-white/70 outline-none cursor-pointer">
-                <option value="" className="bg-slate-900">All Categories</option>
-                <option value="books" className="bg-slate-900">Books</option>
-                <option value="electronics" className="bg-slate-900">Electronics</option>
-                <option value="clothing" className="bg-slate-900">Clothing</option>
-                <option value="furniture" className="bg-slate-900">Furniture</option>
-                <option value="other" className="bg-slate-900">Other</option>
+                className="bg-transparent text-sm font-medium text-slate-600 outline-none cursor-pointer">
+                <option value="">All Categories</option>
+                <option value="books">Books</option>
+                <option value="electronics">Electronics</option>
+                <option value="clothing">Clothing</option>
+                <option value="furniture">Furniture</option>
+                <option value="other">Other</option>
               </select>
             </div>
-            <div className="flex items-center gap-1.5 bg-white/5 border border-white/10 rounded-xl px-3 py-2">
+            <div className="flex items-center gap-1.5 bg-slate-50 border border-slate-200 rounded-xl px-3 py-2">
               <select value={conditionFilter} onChange={(e) => setConditionFilter(e.target.value)}
-                className="bg-transparent text-sm font-medium text-white/70 outline-none cursor-pointer">
-                <option value="" className="bg-slate-900">All Conditions</option>
-                <option value="New" className="bg-slate-900">New</option>
-                <option value="Like New" className="bg-slate-900">Like New</option>
-                <option value="Good" className="bg-slate-900">Good</option>
-                <option value="Fair" className="bg-slate-900">Fair</option>
-                <option value="Poor" className="bg-slate-900">Poor</option>
+                className="bg-transparent text-sm font-medium text-slate-600 outline-none cursor-pointer">
+                <option value="">All Conditions</option>
+                <option value="New">New</option>
+                <option value="Like New">Like New</option>
+                <option value="Good">Good</option>
+                <option value="Fair">Fair</option>
+                <option value="Poor">Poor</option>
               </select>
             </div>
-            <div className="flex items-center gap-1.5 bg-white/5 border border-white/10 rounded-xl px-3 py-2">
+            <div className="flex items-center gap-1.5 bg-slate-50 border border-slate-200 rounded-xl px-3 py-2">
               <select value={sortOrder} onChange={(e) => setSortOrder(e.target.value)}
-                className="bg-transparent text-sm font-medium text-white/70 outline-none cursor-pointer">
-                <option value="newest" className="bg-slate-900">Newest First</option>
-                <option value="oldest" className="bg-slate-900">Oldest First</option>
+                className="bg-transparent text-sm font-medium text-slate-600 outline-none cursor-pointer">
+                <option value="newest">Newest First</option>
+                <option value="oldest">Oldest First</option>
               </select>
             </div>
             {hasActiveFilters && (
@@ -227,7 +227,7 @@ export default function Landing() {
         {/* Grid */}
         {loading ? (
           <div className="flex justify-center items-center py-24">
-            <Loader2 className="w-10 h-10 text-blue-400 animate-spin" />
+            <Loader2 className="w-10 h-10 text-slate-900 animate-spin" />
           </div>
         ) : products.length > 0 ? (
           <>
@@ -238,14 +238,14 @@ export default function Landing() {
             </div>
             {/* CTA */}
             {!user && (
-              <div className="mt-12 text-center bg-white/5 border border-white/10 backdrop-blur-sm rounded-3xl p-10">
-                <h3 className="text-2xl font-extrabold text-white mb-2">Want to post your own items?</h3>
-                <p className="text-white/50 mb-6">Create a free account and start trading with students near you.</p>
+              <div className="mt-12 text-center bg-white border border-slate-200 rounded-3xl p-10 shadow-sm">
+                <h3 className="text-2xl font-extrabold text-slate-900 mb-2">Want to post your own items?</h3>
+                <p className="text-slate-500 mb-6 font-medium">Create a free account and start trading with students near you.</p>
                 <div className="flex justify-center gap-4">
-                  <Link to="/register" className="px-7 py-3 bg-gradient-to-r from-blue-500 to-purple-500 text-white rounded-xl font-bold shadow-lg hover:scale-105 transition-transform">
+                  <Link to="/register" className="px-7 py-3 bg-gradient-to-r from-blue-600 to-indigo-600 text-white rounded-xl font-bold shadow-lg hover:scale-105 transition-transform">
                     Sign Up Free
                   </Link>
-                  <Link to="/login" className="px-7 py-3 text-white/80 bg-white/5 border border-white/20 rounded-xl font-bold hover:bg-white/10 transition-colors">
+                  <Link to="/login" className="px-7 py-3 text-slate-700 bg-slate-50 border border-slate-200 rounded-xl font-bold hover:bg-slate-100 transition-colors">
                     Log In
                   </Link>
                 </div>
@@ -253,16 +253,16 @@ export default function Landing() {
             )}
           </>
         ) : (
-          <div className="text-center py-24 bg-white/5 border border-white/10 rounded-3xl">
-            <Package size={48} className="mx-auto text-white/20 mb-4" />
-            <p className="text-white/50 text-lg font-medium mb-2">No products found.</p>
-            <p className="text-white/30 text-sm mb-6">{hasActiveFilters ? 'Try adjusting your filters.' : 'Be the first to post an item!'}</p>
+          <div className="text-center py-24 bg-white border border-slate-200 rounded-3xl shadow-sm">
+            <Package size={48} className="mx-auto text-slate-200 mb-4" />
+            <p className="text-slate-500 text-lg font-bold mb-2">No products found.</p>
+            <p className="text-slate-400 text-sm mb-6 font-medium">{hasActiveFilters ? 'Try adjusting your filters.' : 'Be the first to post an item!'}</p>
             {hasActiveFilters ? (
-              <button onClick={clearFilters} className="px-6 py-2.5 text-blue-300 border border-blue-400/30 rounded-xl font-semibold hover:bg-white/5">
+              <button onClick={clearFilters} className="px-8 py-3 text-slate-900 border-2 border-slate-900 rounded-2xl font-black text-xs uppercase tracking-widest hover:bg-slate-900 hover:text-white transition-all">
                 Clear Filters
               </button>
             ) : (
-              <Link to="/register" className="px-6 py-2.5 bg-blue-600 text-white rounded-xl font-semibold hover:bg-blue-500 transition-colors">
+              <Link to="/register" className="px-8 py-3 bg-slate-900 text-white rounded-2xl font-black text-xs uppercase tracking-widest hover:bg-black transition-all">
                 Get Started
               </Link>
             )}
@@ -273,11 +273,11 @@ export default function Landing() {
       {/* ── WHY SECTION ── */}
       {!user && (
         <section className="relative py-20 px-6">
-          <div className="w-full h-px bg-gradient-to-r from-transparent via-white/10 to-transparent mb-20 max-w-7xl mx-auto" />
+          <div className="w-full h-px bg-gradient-to-r from-transparent via-slate-200 to-transparent mb-20 max-w-7xl mx-auto" />
           <div className="max-w-6xl mx-auto">
             <div className="text-center mb-12">
-              <h2 className="text-3xl md:text-4xl font-extrabold text-white mb-3">Why CampusXchange?</h2>
-              <p className="text-white/40 max-w-xl mx-auto">Designed for college students — safe, local, and completely free.</p>
+              <h2 className="text-3xl md:text-4xl font-extrabold text-slate-900 mb-3">Why CampusXchange?</h2>
+              <p className="text-slate-500 font-medium max-w-xl mx-auto">Designed for college students — safe, local, and completely free.</p>
             </div>
             <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
               {[
@@ -286,12 +286,12 @@ export default function Landing() {
                 { icon: <RefreshCcw size={28} />, title: 'Eco-Friendly', desc: 'Give items a second life and reduce campus waste.' },
               ].map(({ icon, title, desc }) => (
                 <motion.div key={title} whileHover={{ y: -6 }}
-                  className="p-8 rounded-3xl border border-white/10 bg-white/5 backdrop-blur-sm hover:bg-white/10 hover:border-white/20 hover:shadow-xl hover:shadow-blue-500/10 transition-all duration-300 group cursor-default">
-                  <div className="w-14 h-14 rounded-2xl bg-blue-500/10 border border-blue-400/20 text-blue-300 flex items-center justify-center mb-5 group-hover:bg-gradient-to-br group-hover:from-blue-500 group-hover:to-purple-500 group-hover:text-white group-hover:border-transparent transition-all duration-300">
+                  className="p-10 rounded-[2.5rem] border border-slate-100 bg-white hover:border-slate-300 transition-all duration-500 group cursor-default shadow-sm text-center md:text-left">
+                  <div className="w-16 h-16 mx-auto md:mx-0 rounded-2xl bg-slate-50 border border-slate-100 text-slate-900 flex items-center justify-center mb-6 group-hover:bg-slate-900 group-hover:text-white transition-all duration-500 shadow-sm">
                     {icon}
                   </div>
-                  <h3 className="text-xl font-bold text-white mb-2">{title}</h3>
-                  <p className="text-white/40 leading-relaxed">{desc}</p>
+                  <h3 className="text-2xl font-black text-slate-900 mb-2 tracking-tight">{title}</h3>
+                  <p className="text-slate-500 font-medium leading-relaxed">{desc}</p>
                 </motion.div>
               ))}
             </div>
@@ -300,20 +300,20 @@ export default function Landing() {
       )}
 
       {/* ── FOOTER ── */}
-      <footer className="relative border-t border-white/10 py-10 px-6 mt-8">
-        <div className="max-w-7xl mx-auto flex flex-col md:flex-row justify-between items-center gap-4">
+      <footer className="relative border-t border-slate-200 py-12 px-6 mt-12 bg-white/50 backdrop-blur-sm">
+        <div className="max-w-7xl mx-auto flex flex-col md:flex-row justify-between items-center gap-8">
           <div className="flex items-center gap-3">
-            <div className="w-9 h-9 rounded-xl bg-gradient-to-tr from-blue-500 to-purple-500 flex items-center justify-center font-black text-white text-sm shadow-lg">CX</div>
-            <span className="text-xl font-black text-white tracking-tight">
-              Campus<span className="text-transparent bg-clip-text bg-gradient-to-r from-blue-400 to-purple-400">Xchange</span>
+            <div className="w-9 h-9 rounded-xl bg-slate-900 flex items-center justify-center font-black text-white text-sm">CX</div>
+            <span className="text-xl font-black text-slate-900 tracking-tighter lowercase">
+              campusxchange
             </span>
           </div>
-          <div className="flex gap-6 text-sm text-white/40">
-            <a href="#" className="hover:text-white transition-colors">Privacy</a>
-            <a href="#" className="hover:text-white transition-colors">Terms</a>
-            <a href="#" className="hover:text-white transition-colors">Support</a>
+          <div className="flex gap-8 text-[10px] font-black text-slate-400 uppercase tracking-widest">
+            <a href="#" className="hover:text-slate-900 transition-colors">Privacy Policy</a>
+            <a href="#" className="hover:text-slate-900 transition-colors">Terms of Service</a>
+            <a href="#" className="hover:text-slate-900 transition-colors">Support</a>
           </div>
-          <p className="text-xs text-white/30">© {new Date().getFullYear()} CampusXchange. All rights reserved.</p>
+          <p className="text-[10px] font-black text-slate-400 tracking-widest uppercase">© {new Date().getFullYear()} CampusXchange. Built for students.</p>
         </div>
       </footer>
     </div>

@@ -82,7 +82,7 @@ export default function Profile() {
     }
   };
 
-  if (loading) return <div className="flex justify-center py-20"><Loader2 className="w-10 h-10 animate-spin text-blue-500" /></div>;
+  if (loading) return <div className="flex justify-center py-32"><Loader2 className="w-12 h-12 animate-spin text-slate-900" /></div>;
   if (!profileUser) return <div className="text-center py-20 text-white/50">User not found.</div>;
 
   return (
@@ -92,38 +92,39 @@ export default function Profile() {
       </Helmet>
 
       {/* Profile Header */}
-      <div className="glass-card p-8 flex flex-col md:flex-row items-center md:items-start gap-10">
-        <div className="relative group shrink-0">
-          <div className="w-32 h-32 md:w-40 md:h-40 rounded-full bg-gradient-to-tr from-blue-500 to-purple-500 flex items-center justify-center text-5xl font-extrabold text-white shadow-[0_0_30px_rgba(59,130,246,0.5)] overflow-hidden border-4 border-white/20">
+      <div className="glass-card p-10 flex flex-col md:flex-row items-center md:items-start gap-10 bg-white/70 border-slate-200 shadow-xl relative overflow-hidden">
+        <div className="absolute top-0 right-0 w-32 h-32 bg-slate-50 rounded-full -mr-16 -mt-16 opacity-50 blur-3xl"></div>
+        <div className="relative group shrink-0 z-10">
+          <div className="w-32 h-32 md:w-44 md:h-44 rounded-3xl bg-slate-900 flex items-center justify-center text-6xl font-black text-white shadow-2xl overflow-hidden border-4 border-white rotate-3 group-hover:rotate-0 transition-transform duration-500">
             {profileUser.profile_image_url ? (
-              <img src={profileUser.profile_image_url} alt={profileUser.name} className="w-full h-full object-cover" />
+              <img src={profileUser.profile_image_url} alt={profileUser.name} className="w-full h-full object-cover -rotate-3 group-hover:rotate-0 transition-transform duration-500" />
             ) : (
-              <span>{profileUser.name.charAt(0).toUpperCase()}</span>
+              <span className="-rotate-3 group-hover:rotate-0 transition-transform duration-500">{profileUser.name.charAt(0).toUpperCase()}</span>
             )}
           </div>
           
           {isOwner && (
             <button 
               onClick={() => fileInputRef.current.click()}
-              className="absolute bottom-2 right-2 p-3 bg-blue-600 text-white rounded-full shadow-[0_0_15px_rgba(37,99,235,0.8)] hover:scale-110 transition-transform hover:bg-blue-500"
+              className="absolute -bottom-3 -right-3 p-4 bg-white text-slate-900 rounded-2xl shadow-xl hover:scale-110 transition-transform border border-slate-100"
               disabled={uploading}
             >
-              {uploading ? <Loader2 className="w-5 h-5 animate-spin" /> : <Camera className="w-5 h-5" />}
+              {uploading ? <Loader2 className="w-6 h-6 animate-spin" /> : <Camera className="w-6 h-6" />}
             </button>
           )}
           <input type="file" ref={fileInputRef} className="hidden" accept="image/*" onChange={handleImageUpload} />
         </div>
 
-        <div className="flex-1 text-center md:text-left space-y-4 w-full">
+        <div className="flex-1 text-center md:text-left space-y-6 w-full z-10">
           <div className="flex items-center justify-center md:justify-start gap-4">
-            <h1 className="text-3xl md:text-5xl font-extrabold text-white tracking-tight">{profileUser.name}</h1>
-            {isOwner && <span className="px-3 py-1 bg-blue-500/20 text-blue-300 font-black text-xs rounded-full border border-blue-500/30">YOU</span>}
+            <h1 className="text-4xl md:text-5xl font-black text-slate-900 tracking-tight lowercase">{profileUser.name}</h1>
+            {isOwner && <span className="px-4 py-1 bg-slate-900 text-white font-black text-[10px] rounded-full uppercase tracking-widest shadow-sm">you</span>}
           </div>
           
-          <div className="flex flex-wrap items-center justify-center md:justify-start gap-4 text-sm font-medium text-white/70">
-            {profileUser.college && <span className="flex items-center bg-white/5 py-1.5 px-3 rounded-lg border border-white/10"><UserIcon className="w-4 h-4 mr-2 text-blue-400"/> {profileUser.college}</span>}
-            {profileUser.location && <span className="flex items-center bg-white/5 py-1.5 px-3 rounded-lg border border-white/10"><MapPin className="w-4 h-4 mr-2 text-purple-400"/> {profileUser.location}</span>}
-            <span className="flex items-center bg-white/5 py-1.5 px-3 rounded-lg border border-white/10"><Calendar className="w-4 h-4 mr-2 text-green-400"/> Joined {new Date(profileUser.created_at).toLocaleDateString()}</span>
+          <div className="flex flex-wrap items-center justify-center md:justify-start gap-3 text-[10px] font-black uppercase tracking-widest text-slate-400">
+            {profileUser.college && <span className="flex items-center bg-slate-50 py-2 px-4 rounded-xl border border-slate-100 shadow-sm"><UserIcon className="w-4 h-4 mr-2 text-slate-900"/> {profileUser.college}</span>}
+            {profileUser.location && <span className="flex items-center bg-slate-50 py-2 px-4 rounded-xl border border-slate-100 shadow-sm"><MapPin className="w-4 h-4 mr-2 text-slate-900"/> {profileUser.location}</span>}
+            <span className="flex items-center bg-slate-50 py-2 px-4 rounded-xl border border-slate-100 shadow-sm"><Calendar className="w-4 h-4 mr-2 text-slate-900"/> {new Date(profileUser.created_at).toLocaleDateString()}</span>
           </div>
 
           {editingBio ? (
@@ -131,38 +132,38 @@ export default function Profile() {
               <textarea
                 value={newBio}
                 onChange={(e) => setNewBio(e.target.value)}
-                className="w-full bg-black/30 text-white border border-blue-500/50 p-4 rounded-xl focus:ring-2 focus:ring-blue-500 focus:outline-none placeholder-white/40"
+                className="w-full bg-slate-50 text-slate-800 border border-slate-200 p-5 rounded-2xl focus:ring-2 focus:ring-blue-500/20 focus:border-blue-500 outline-none placeholder-slate-400 font-medium shadow-inner"
                 rows={3}
                 placeholder="Write something about yourself..."
                 disabled={savingBio}
               />
-              <div className="flex justify-end gap-2 mt-2">
+              <div className="flex justify-end gap-3 mt-4">
                 <button
                   onClick={() => { setEditingBio(false); setNewBio(profileUser.bio || ''); }}
-                  className="px-4 py-2 rounded-lg bg-white/5 text-white/70 hover:bg-white/10 hover:text-white transition-colors flex items-center gap-2 font-medium"
+                  className="px-5 py-2.5 rounded-xl bg-slate-100 text-slate-500 hover:bg-slate-200 transition-colors flex items-center gap-2 font-black text-xs"
                   disabled={savingBio}
                 >
                   <X className="w-4 h-4" /> Cancel
                 </button>
                 <button
                   onClick={handleSaveBio}
-                  className="px-4 py-2 rounded-lg bg-blue-600 text-white hover:bg-blue-500 transition-colors shadow-[0_0_15px_rgba(37,99,235,0.4)] flex items-center gap-2 font-bold"
+                  className="px-8 py-3 rounded-2xl bg-slate-900 text-white hover:bg-black transition-all shadow-xl flex items-center gap-2 font-black text-[10px] uppercase tracking-widest"
                   disabled={savingBio}
                 >
                   {savingBio ? <Loader2 className="w-4 h-4 animate-spin" /> : <Check className="w-4 h-4" />}
-                  Save
+                  Save Bio
                 </button>
               </div>
             </div>
           ) : (
             <div className="max-w-2xl relative group w-full md:w-auto">
-              <p className="text-white/80 w-full bg-black/20 p-5 rounded-2xl border border-white/5 shadow-inner leading-relaxed min-h-[5rem]">
-                {profileUser.bio || "This user hasn't written a bio yet."}
+              <p className="text-slate-600 w-full bg-slate-50/50 p-6 rounded-3xl border border-slate-100 shadow-inner leading-relaxed min-h-[5rem] font-medium italic">
+                "{profileUser.bio || "This user hasn't written a bio yet."}"
               </p>
               {isOwner && (
                 <button
                   onClick={() => { setEditingBio(true); setNewBio(profileUser.bio || ''); }}
-                  className="absolute top-3 right-3 p-2 bg-white/5 hover:bg-white/20 text-white/50 hover:text-white rounded-lg opacity-0 sm:opacity-0 group-hover:opacity-100 transition-all border border-white/10 backdrop-blur-md"
+                  className="absolute top-4 right-4 p-3 bg-white hover:bg-slate-50 text-slate-400 hover:text-slate-900 rounded-xl opacity-0 group-hover:opacity-100 transition-all border border-slate-100 shadow-md backdrop-blur-md"
                   title="Edit Bio"
                 >
                   <Edit2 className="w-4 h-4" />
@@ -171,41 +172,48 @@ export default function Profile() {
             </div>
           )}
 
-          <div className="flex gap-10 pt-4 justify-center md:justify-start">
-            <div className="text-center bg-white/5 px-6 py-3 rounded-2xl border border-white/10">
-              <span className="block text-3xl font-black text-white">{products.length}</span>
-              <span className="text-xs font-bold text-white/50 uppercase tracking-widest mt-1 block">Listings</span>
+          <div className="flex gap-8 pt-4 justify-center md:justify-start">
+            <div className="text-center bg-white px-8 py-4 rounded-3xl border border-slate-100 shadow-sm group hover:scale-105 transition-transform">
+              <span className="block text-4xl font-black text-slate-900 group-hover:text-black transition-colors">{products.length}</span>
+              <span className="text-[10px] font-black text-slate-400 uppercase tracking-widest mt-1 block">Active Listings</span>
             </div>
-            {/* Add more stats here if needed, like exchanges completed */}
           </div>
         </div>
       </div>
 
-      {/* User's Products Grid (Instagram Style) */}
+      {/* User's Products Grid */}
       <div className="px-2">
-        <h3 className="text-2xl font-black text-white border-b border-white/10 pb-4 mb-6">{isOwner ? 'My' : `${profileUser.name.split(' ')[0]}'s`} Listings</h3>
+        <h3 className="text-2xl font-black text-slate-900 border-b border-slate-100 pb-6 mb-8 flex items-center justify-between">
+          <span>{isOwner ? 'Your' : `${profileUser.name.split(' ')[0]}'s`} Collection</span>
+          <span className="text-xs font-black text-slate-400 uppercase tracking-widest">{products.length} Items</span>
+        </h3>
         {products.length > 0 ? (
-          <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-4">
+          <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-6">
             {products.map(product => (
-              <div key={product.id} className="aspect-square relative group overflow-hidden rounded-2xl bg-white/5 shadow-lg border border-white/10 cursor-pointer">
+              <div key={product.id} className="aspect-square relative group overflow-hidden rounded-3xl bg-white shadow-lg border border-slate-100 cursor-pointer hover:border-slate-900 transition-all">
                 {product.image_url ? (
-                  <img src={product.image_url} alt={product.title} className="w-full h-full object-cover group-hover:scale-110 transition-transform duration-500" />
+                  <img src={product.image_url} alt={product.title} className="w-full h-full object-cover group-hover:scale-110 transition-transform duration-700" />
                 ) : (
-                  <div className="w-full h-full flex flex-col items-center justify-center text-white/30 p-4 text-center group-hover:bg-white/10 transition-colors">
-                    <span className="text-xs font-bold truncate w-full">{product.title}</span>
+                  <div className="w-full h-full flex flex-col items-center justify-center text-slate-300 p-6 text-center group-hover:bg-slate-50 transition-colors">
+                    <UserIcon size={32} className="mb-2 opacity-20" />
+                    <span className="text-xs font-black truncate w-full">{product.title}</span>
                   </div>
                 )}
-                {/* Instagram style hover overlay */}
-                <div className="absolute inset-0 bg-black/60 opacity-0 group-hover:opacity-100 transition-opacity flex flex-col items-center justify-center text-white p-4 text-center backdrop-blur-sm">
-                  <span className="font-bold text-lg leading-tight mb-2 w-full line-clamp-2">{product.title}</span>
-                  <span className="px-3 py-1 bg-white/20 rounded-full text-xs font-bold border border-white/30 backdrop-blur-md">{product.category}</span>
+                {/* Hover overlay */}
+                <div className="absolute inset-0 bg-white/90 opacity-0 group-hover:opacity-100 transition-opacity flex flex-col items-center justify-center text-slate-900 p-6 text-center backdrop-blur-sm">
+                  <span className="font-black text-lg leading-tight mb-3 w-full line-clamp-2">{product.title}</span>
+                  <div className="flex flex-wrap justify-center gap-2">
+                    <span className="px-4 py-1.5 bg-slate-900 text-white rounded-full text-[10px] font-black uppercase tracking-widest border border-slate-800">{product.category}</span>
+                    <span className="px-4 py-1.5 bg-slate-50 text-slate-600 rounded-full text-[10px] font-black uppercase tracking-widest border border-slate-100">{product.condition}</span>
+                  </div>
                 </div>
               </div>
             ))}
           </div>
         ) : (
-          <div className="text-center py-20 text-white/40 bg-white/5 rounded-3xl border border-dashed border-white/10">
-            No listings yet.
+          <div className="text-center py-24 text-slate-300 bg-slate-50/50 rounded-[3rem] border-2 border-dashed border-slate-200">
+            <Loader2 className="w-12 h-12 mx-auto mb-4 opacity-10" />
+            <p className="font-black text-slate-400">No items showcased yet.</p>
           </div>
         )}
       </div>

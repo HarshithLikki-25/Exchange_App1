@@ -46,23 +46,23 @@ export default function Register() {
       <div className="w-full max-w-md glass-card rounded-2xl shadow-2xl overflow-hidden">
         <div className="p-8">
           <div className="text-center mb-10">
-            <div className="inline-flex items-center justify-center w-16 h-16 rounded-full bg-white/5 text-purple-400 mb-4 shadow-inner border border-white/10">
+            <div className="inline-flex items-center justify-center w-16 h-16 rounded-full bg-slate-100 text-slate-900 mb-4 shadow-sm border border-slate-200">
               <Store size={32} />
             </div>
-            <h2 className="text-3xl font-extrabold text-white tracking-tight">Create an Account</h2>
-            <p className="text-white/50 mt-2 text-sm font-medium">Join CampusXchange today</p>
+            <h2 className="text-3xl font-black text-slate-900 tracking-tighter lowercase">create an account</h2>
+            <p className="text-slate-500 mt-2 text-[11px] font-black uppercase tracking-widest leading-relaxed">Join campusxchange today</p>
           </div>
           
           {error && (
-            <div className="bg-red-500/10 text-red-400 p-4 rounded-xl mb-6 text-sm font-bold border border-red-500/20 shadow-inner flex items-center">
-              <span className="w-2 h-2 bg-red-400 rounded-full mr-2 shadow-[0_0_8px_rgba(248,113,113,0.8)]"></span>
+            <div className="bg-red-50 text-red-600 p-4 rounded-xl mb-6 text-sm font-bold border border-red-100 shadow-sm flex items-center">
+              <span className="w-2 h-2 bg-red-500 rounded-full mr-2 shadow-[0_0_8px_rgba(239,68,68,0.4)]"></span>
               {error}
             </div>
           )}
 
           <form onSubmit={handleSubmit} className="space-y-4">
             <div className="relative group">
-              <div className="absolute inset-y-0 left-0 pl-4 flex items-center pointer-events-none text-white/40 group-focus-within:text-purple-400 transition-colors">
+              <div className="absolute inset-y-0 left-0 pl-4 flex items-center pointer-events-none text-slate-400 group-focus-within:text-slate-900 transition-colors">
                 <UserIcon size={20} />
               </div>
               <input
@@ -70,14 +70,14 @@ export default function Register() {
                 name="name"
                 value={formData.name}
                 onChange={handleChange}
-                className="w-full pl-11 pr-4 py-3 bg-black/20 border border-purple-300/30 rounded-xl text-white placeholder-white/30 focus:outline-none focus:ring-2 focus:ring-purple-400 focus:border-purple-400 transition-all shadow-sm text-sm"
+                className="w-full pl-11 pr-4 py-3 bg-slate-50 border border-slate-100 rounded-2xl text-slate-800 placeholder-slate-400 focus:outline-none focus:ring-4 focus:ring-slate-900/5 focus:border-slate-300 transition-all shadow-inner text-sm"
                 placeholder="Full Name *"
                 required
               />
             </div>
             
             <div className="relative group">
-              <div className="absolute inset-y-0 left-0 pl-4 flex items-center pointer-events-none text-white/40 group-focus-within:text-purple-400 transition-colors">
+              <div className="absolute inset-y-0 left-0 pl-4 flex items-center pointer-events-none text-slate-400 group-focus-within:text-slate-900 transition-colors">
                 <Mail size={20} />
               </div>
               <input
@@ -85,14 +85,14 @@ export default function Register() {
                 name="email"
                 value={formData.email}
                 onChange={handleChange}
-                className="w-full pl-11 pr-4 py-3 bg-black/20 border border-purple-300/30 rounded-xl text-white placeholder-white/30 focus:outline-none focus:ring-2 focus:ring-purple-400 focus:border-purple-400 transition-all shadow-sm text-sm"
+                className="w-full pl-11 pr-4 py-3 bg-slate-50 border border-slate-100 rounded-2xl text-slate-800 placeholder-slate-400 focus:outline-none focus:ring-4 focus:ring-slate-900/5 focus:border-slate-300 transition-all shadow-inner text-sm"
                 placeholder="Email Address (e.g., student@college.edu) *"
                 required
               />
             </div>
 
             <div className="relative group">
-              <div className="absolute inset-y-0 left-0 pl-4 flex items-center pointer-events-none text-white/40 group-focus-within:text-purple-400 transition-colors">
+              <div className="absolute inset-y-0 left-0 pl-4 flex items-center pointer-events-none text-slate-400 group-focus-within:text-slate-900 transition-colors">
                 <Lock size={20} />
               </div>
               <input
@@ -100,14 +100,14 @@ export default function Register() {
                 name="password"
                 value={formData.password}
                 onChange={handleChange}
-                className="w-full pl-11 pr-4 py-3 bg-black/20 border border-purple-300/30 rounded-xl text-white placeholder-white/30 focus:outline-none focus:ring-2 focus:ring-purple-400 focus:border-purple-400 transition-all shadow-sm text-sm"
+                className="w-full pl-11 pr-4 py-3 bg-slate-50 border border-slate-100 rounded-2xl text-slate-800 placeholder-slate-400 focus:outline-none focus:ring-4 focus:ring-slate-900/5 focus:border-slate-300 transition-all shadow-inner text-sm"
                 placeholder="Password *"
                 required
               />
             </div>
 
             <div className="relative group pt-2">
-              <div className="absolute inset-y-0 left-0 pl-4 flex items-center pointer-events-none text-white/40 group-focus-within:text-blue-400 transition-colors mt-2">
+              <div className="absolute inset-y-0 left-0 pl-4 flex items-center pointer-events-none text-slate-400 group-focus-within:text-slate-900 transition-colors mt-2">
                 <GraduationCap size={20} />
               </div>
               <input
@@ -115,13 +115,13 @@ export default function Register() {
                 name="college"
                 value={formData.college}
                 onChange={handleChange}
-                className="w-full pl-11 pr-4 py-3 bg-black/20 border border-blue-300/30 rounded-xl text-white placeholder-white/30 focus:outline-none focus:ring-2 focus:ring-blue-400 focus:border-blue-400 transition-all shadow-sm text-sm"
+                className="w-full pl-11 pr-4 py-3 bg-slate-50 border border-slate-100 rounded-2xl text-slate-800 placeholder-slate-400 focus:outline-none focus:ring-4 focus:ring-slate-900/5 focus:border-slate-300 transition-all shadow-inner text-sm"
                 placeholder="College / University (Optional)"
               />
             </div>
 
             <div className="relative group">
-              <div className="absolute inset-y-0 left-0 pl-4 flex items-center pointer-events-none text-white/40 group-focus-within:text-blue-400 transition-colors">
+              <div className="absolute inset-y-0 left-0 pl-4 flex items-center pointer-events-none text-slate-400 group-focus-within:text-slate-900 transition-colors">
                 <MapPin size={20} />
               </div>
               <input
@@ -129,16 +129,16 @@ export default function Register() {
                 name="location"
                 value={formData.location}
                 onChange={handleChange}
-                className="w-full pl-11 pr-4 py-3 bg-black/20 border border-blue-300/30 rounded-xl text-white placeholder-white/30 focus:outline-none focus:ring-2 focus:ring-blue-400 focus:border-blue-400 transition-all shadow-sm text-sm"
+                className="w-full pl-11 pr-4 py-3 bg-slate-50 border border-slate-100 rounded-2xl text-slate-800 placeholder-slate-400 focus:outline-none focus:ring-4 focus:ring-slate-900/5 focus:border-slate-300 transition-all shadow-inner text-sm"
                 placeholder="Location (e.g., North Campus, Dorm A)"
               />
             </div>
 
-            <div className="pt-4 mt-4 border-t border-white/10">
+            <div className="pt-4 mt-4 border-t border-slate-100">
               <button
                 type="submit"
                 disabled={loading}
-                className="w-full flex items-center justify-center space-x-2 py-3.5 px-4 border border-transparent rounded-xl shadow-[0_0_20px_rgba(168,85,247,0.3)] text-sm font-bold text-white bg-gradient-to-r from-blue-600 to-purple-600 hover:shadow-[0_0_25px_rgba(168,85,247,0.5)] focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-offset-slate-900 focus:ring-purple-500 disabled:opacity-50 disabled:cursor-not-allowed transform hover:-translate-y-0.5 transition-all duration-200 uppercase tracking-wide"
+                className="w-full flex items-center justify-center space-x-2 py-4 px-4 rounded-2xl shadow-xl text-xs font-black text-white bg-slate-900 hover:bg-black focus:outline-none focus:ring-4 focus:ring-slate-900/10 disabled:opacity-50 disabled:cursor-not-allowed transform hover:-translate-y-0.5 transition-all duration-300 uppercase tracking-[0.2em]"
               >
                 <span>{loading ? 'Creating Account...' : 'Sign Up'}</span>
                 {!loading && <ArrowRight size={18} className="ml-1" />}
@@ -146,9 +146,9 @@ export default function Register() {
             </div>
           </form>
 
-          <p className="mt-8 text-center text-sm text-white/60 font-medium">
+          <p className="mt-10 text-center text-[10px] text-slate-400 font-black uppercase tracking-[0.15em]">
             Already have an account?{' '}
-            <Link to="/login" className="text-purple-400 hover:text-purple-300 hover:underline transition-all">
+            <Link to="/login" className="text-slate-900 hover:scale-105 inline-block transition-transform">
               Log in here
             </Link>
           </p>

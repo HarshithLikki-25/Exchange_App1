@@ -55,7 +55,15 @@ export default function ProductDetail() {
       setSuccess('Exchange request sent successfully!');
       setMessage('');
     } catch (err) {
-      setError(err.response?.data?.detail || 'Failed to send request');
+      let errorMsg = 'Failed to send request';
+      if (err.response?.data?.detail) {
+        if (Array.isArray(err.response.data.detail)) {
+          errorMsg = err.response.data.detail[0].msg;
+        } else {
+          errorMsg = err.response.data.detail;
+        }
+      }
+      setError(errorMsg);
     } finally {
       setSending(false);
     }
@@ -96,11 +104,11 @@ export default function ProductDetail() {
       {/* Details Section */}
       <div className="flex flex-col py-4">
         <div className="flex justify-between items-start mb-4">
-          <h1 className="text-4xl font-extrabold text-white tracking-tight">{product.title}</h1>
+          <h1 className="text-5xl font-black text-slate-900 tracking-tighter lowercase">{product.title}</h1>
           {isOwner && (
             <button 
               onClick={handleDelete}
-              className="p-3 text-red-500 bg-red-500/10 hover:bg-red-500/20 border border-red-500/20 rounded-full transition-colors"
+              className="p-4 text-slate-400 bg-slate-50 hover:bg-slate-100 border border-slate-100 rounded-2xl transition-all shadow-sm"
               title="Delete Listing"
             >
               <Trash2 size={24} />
@@ -108,94 +116,95 @@ export default function ProductDetail() {
           )}
         </div>
 
-        <div className="flex flex-wrap gap-3 mb-8">
-          <span className="inline-flex items-center space-x-1.5 px-3.5 py-1.5 bg-blue-500/20 border border-blue-400/20 text-blue-300 rounded-full text-sm font-semibold capitalize tracking-wide">
-            <Tag size={15} />
+        <div className="flex flex-wrap gap-3 mb-10">
+          <span className="inline-flex items-center space-x-2 px-5 py-2 bg-slate-900 text-white rounded-full text-[10px] font-black uppercase tracking-widest shadow-lg">
+            <Tag size={14} />
             <span>{product.category || 'Uncategorized'}</span>
           </span>
           {product.condition && (
-            <span className="inline-flex items-center space-x-1.5 px-3.5 py-1.5 bg-green-500/20 border border-green-400/20 text-green-300 rounded-full text-sm font-semibold tracking-wide">
-              <span className="w-2 h-2 rounded-full bg-green-400 shadow-[0_0_8px_rgba(74,222,128,0.8)]"></span>
+            <span className="inline-flex items-center space-x-2 px-5 py-2 bg-white border border-slate-100 text-slate-400 rounded-full text-[10px] font-black uppercase tracking-widest shadow-sm">
+              <span className="w-1.5 h-1.5 rounded-full bg-slate-200"></span>
               <span>{product.condition}</span>
             </span>
           )}
-          <span className="inline-flex items-center space-x-1.5 px-3.5 py-1.5 bg-white/5 border border-white/10 text-white/70 rounded-full text-sm font-medium tracking-wide">
-            <Clock size={15} />
+          <span className="inline-flex items-center space-x-2 px-5 py-2 bg-slate-50 text-slate-400 rounded-full text-[10px] font-black uppercase tracking-widest">
+            <Clock size={14} />
             <span>{new Date(product.created_at).toLocaleDateString()}</span>
           </span>
         </div>
 
-        <div className="max-w-none text-white/70 mb-10">
+        <div className="max-w-none text-slate-600 mb-10">
           <p className="whitespace-pre-line text-lg leading-relaxed font-medium">{product.description || 'No description provided.'}</p>
         </div>
 
-        <div className="mt-auto bg-white/5 backdrop-blur-xl rounded-3xl p-6 md:p-8 border border-white/10 shadow-2xl">
+        <div className="mt-auto bg-white/70 backdrop-blur-xl rounded-3xl p-6 md:p-8 border border-slate-200 shadow-2xl">
           {!user ? (
-            <div className="text-center py-4">
-              <p className="text-white/60 mb-5 font-medium">You must be logged in to request an exchange.</p>
-              <button onClick={() => navigate('/login')} className="px-8 py-3 bg-gradient-to-r from-blue-600 to-purple-600 text-white rounded-xl font-bold inline-block hover:scale-105 transition-transform shadow-lg shadow-purple-500/20 tracking-wide uppercase text-sm">Log in now</button>
+            <div className="text-center py-6">
+              <p className="text-slate-400 mb-8 font-black uppercase tracking-widest text-[10px]">You must be logged in to request an exchange.</p>
+              <button onClick={() => navigate('/login')} className="px-12 py-4 bg-slate-900 text-white rounded-2xl font-black text-xs uppercase tracking-widest hover:bg-black transition-all shadow-2xl">Log in</button>
             </div>
           ) : isOwner ? (
-            <div className="text-center bg-blue-500/10 border border-blue-500/20 py-6 rounded-2xl">
-              <p className="text-blue-300 font-bold text-lg">This is your listing.</p>
+            <div className="text-center bg-slate-50 border border-slate-100 py-8 rounded-[2rem]">
+              <p className="text-slate-900 font-black text-[10px] uppercase tracking-widest">this is your listing</p>
             </div>
           ) : (
             <form onSubmit={handleExchange} className="space-y-5">
               <div className="space-y-4">
                 <div className="flex items-center justify-between">
-                  <h3 className="text-2xl font-extrabold text-white border-b border-white/10 pb-2">
-                    {myProducts.length > 0 ? 'Request an Exchange' : 'Direct Request'}
+                  <h3 className="text-2xl font-black text-slate-900 border-b-2 border-black pb-2 tracking-tighter lowercase">
+                    {myProducts.length > 0 ? 'request exchange' : 'direct request'}
                   </h3>
                   {myProducts.length === 0 && (
-                    <span className="text-[10px] bg-blue-500/20 text-blue-300 px-2 py-0.5 rounded-full border border-blue-500/30 uppercase font-black tracking-tighter shadow-lg shadow-blue-500/10">Purchase Option</span>
+                    <span className="text-[9px] bg-slate-900 text-white px-3 py-1 rounded-full uppercase font-black tracking-widest shadow-xl">no items</span>
                   )}
                 </div>
-                {!myProducts.length > 0 && (
-                  <p className="text-white/40 text-xs font-medium bg-black/20 p-3 rounded-xl border border-white/5 shadow-inner">
-                    You don't have any items to exchange. You can still send a direct request to the owner to purchase or negotiate.
+                {myProducts.length === 0 && (
+                  <p className="text-slate-400 text-[10px] font-black uppercase tracking-widest bg-slate-50 p-4 rounded-2xl border border-slate-100">
+                    You don't have any items to exchange. You can still send a direct request.
                   </p>
                 )}
               </div>
               
-              {error && <div className="text-red-400 text-sm bg-red-500/10 border border-red-500/20 p-3 rounded-lg font-semibold flex items-center shadow-inner"><span className="w-2 h-2 bg-red-400 rounded-full mr-2 shadow-[0_0_8px_rgba(248,113,113,0.8)]"></span>{error}</div>}
-              {success && <div className="text-green-400 text-sm bg-green-500/10 border border-green-500/20 p-3 rounded-lg font-semibold flex items-center shadow-inner"><span className="w-2 h-2 bg-green-400 rounded-full mr-2 shadow-[0_0_8px_rgba(74,222,128,0.8)]"></span>{success}</div>}
+              {error && <div className="text-white text-[10px] bg-black p-4 rounded-xl font-black uppercase tracking-widest flex items-center shadow-2xl">{error}</div>}
+              {success && <div className="text-white text-[10px] bg-slate-900 p-4 rounded-xl font-black uppercase tracking-widest flex items-center shadow-2xl">{success}</div>}
               
               {myProducts.length > 0 && (
-                <div className="space-y-2">
-                  <label className="block text-sm font-bold text-white/80">Select an item to offer (Optional)</label>
+                <div className="space-y-3">
+                  <label className="block text-[10px] font-black text-slate-400 uppercase tracking-widest">Select an item to offer (Optional)</label>
                   <select 
                     value={offeredProductId}
                     onChange={(e) => setOfferedProductId(e.target.value)}
-                    className="w-full p-4 bg-black/20 border border-white/10 rounded-xl focus:ring-2 focus:ring-blue-500 focus:border-blue-500 outline-none text-white text-sm transition-all shadow-inner appearance-none custom-select-arrow cursor-pointer"
+                    className="w-full p-4 bg-slate-50 border border-slate-100 rounded-2xl focus:ring-4 focus:ring-slate-900/5 focus:border-slate-300 outline-none text-slate-900 text-sm font-bold transition-all shadow-inner appearance-none cursor-pointer"
                   >
-                    <option value="" className="bg-slate-900 text-white">-- No item (Direct Request) --</option>
+                    <option value="" className="bg-white text-slate-700">-- No item (Direct Request) --</option>
                     {myProducts.map(p => (
-                      <option key={p.id} value={p.id} className="bg-slate-900 text-white">{p.title}</option>
+                      <option key={p.id} value={p.id} className="bg-white text-slate-700">{p.title}</option>
                     ))}
                   </select>
                 </div>
               )}
 
-              <div className="space-y-2">
-                <label className="block text-sm font-bold text-white/80">Add a message</label>
+              <div className="space-y-3">
+                <label className="block text-[10px] font-black text-slate-400 uppercase tracking-widest">Add a message</label>
                 <textarea
                   value={message}
                   onChange={(e) => setMessage(e.target.value)}
                   placeholder="Hey, I'd love to trade this..."
-                  className="w-full p-4 bg-black/20 border border-white/10 rounded-xl focus:ring-2 focus:ring-blue-500 focus:border-blue-500 outline-none resize-none h-28 text-sm text-white placeholder-white/30 transition-all shadow-inner"
+                  className="w-full p-5 bg-slate-50 border border-slate-100 rounded-[2rem] focus:ring-4 focus:ring-slate-900/5 focus:border-slate-300 outline-none resize-none h-32 text-sm text-slate-800 placeholder-slate-400 font-medium transition-all shadow-inner"
                   required
+                  minLength={2}
                 />
               </div>
               
               <button
                 type="submit"
                 disabled={sending}
-                className="w-full flex items-center justify-center space-x-2 py-4 bg-gradient-to-r from-blue-600 to-purple-600 text-white font-extrabold uppercase tracking-wide rounded-xl shadow-[0_0_20px_rgba(168,85,247,0.3)] hover:shadow-[0_0_25px_rgba(168,85,247,0.5)] transition-all transform hover:-translate-y-0.5 disabled:opacity-50 mt-2 shadow-lg shadow-purple-500/20"
+                className="w-full flex items-center justify-center space-x-3 py-5 bg-slate-900 text-white font-black uppercase tracking-widest text-xs rounded-2xl shadow-2xl hover:bg-black transition-all transform hover:-translate-y-1 disabled:opacity-50 mt-4"
               >
                 <span>
                   {sending ? 'Sending...' : (offeredProductId ? 'Send Exchange Request' : 'Send Direct Request')}
                 </span>
-                {!sending && <Send size={20} className="ml-1" />}
+                {!sending && <Send size={20} className="ml-2" />}
               </button>
             </form>
           )}

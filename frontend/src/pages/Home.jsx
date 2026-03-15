@@ -140,26 +140,26 @@ export default function Home() {
       </Helmet>
       
       {/* Hero Header */}
-      <div className="text-center py-16 px-4 rounded-3xl bg-slate-900/40 backdrop-blur-md border border-white/10 shadow-2xl relative overflow-hidden">
-        <div className="absolute top-0 left-0 w-full h-full bg-[url('https://www.transparenttextures.com/patterns/cubes.png')] opacity-10 mix-blend-overlay"></div>
-        <div className="absolute -top-40 -right-40 w-96 h-96 bg-blue-500/20 blur-3xl rounded-full pointer-events-none"></div>
-        <div className="absolute -bottom-40 -left-40 w-96 h-96 bg-purple-500/20 blur-3xl rounded-full pointer-events-none"></div>
+      <div className="text-center py-16 px-4 rounded-3xl bg-white/60 backdrop-blur-md border border-slate-200 shadow-xl relative overflow-hidden">
+        <div className="absolute top-0 left-0 w-full h-full bg-[url('https://www.transparenttextures.com/patterns/cubes.png')] opacity-5 mix-blend-overlay"></div>
+        <div className="absolute -top-40 -right-40 w-96 h-96 bg-slate-100 blur-3xl rounded-full pointer-events-none"></div>
+        <div className="absolute -bottom-40 -left-40 w-96 h-96 bg-slate-50 blur-3xl rounded-full pointer-events-none"></div>
         
-        <h1 className="text-4xl md:text-6xl font-black text-white mb-6 relative z-10 tracking-tight">
-          Campus Market<span className="text-transparent bg-clip-text bg-gradient-to-r from-blue-400 to-purple-400">place</span>
+        <h1 className="text-4xl md:text-6xl font-black text-slate-900 mb-6 relative z-10 tracking-tighter lowercase">
+          campus marketplace
         </h1>
-        <p className="text-white/60 max-w-2xl mx-auto text-lg md:text-xl font-medium relative z-10 mb-8">
-          The hub for students to discover, trade, and sustainably exchange items within your college network.
+        <p className="text-slate-500 max-w-2xl mx-auto text-lg md:text-xl font-medium relative z-10 mb-10 leading-relaxed">
+          The hub for students to discover and exchange items within your college network.
         </p>
         
         {/* Nearby Discovery CTA */}
         <button 
           onClick={handleDiscoverNearby}
-          className="relative z-10 inline-flex items-center space-x-2 bg-gradient-to-r from-blue-600 to-purple-600 hover:from-blue-500 hover:to-purple-500 text-white px-8 py-3.5 rounded-full font-bold shadow-[0_0_20px_rgba(59,130,246,0.4)] hover:shadow-[0_0_30px_rgba(168,85,247,0.6)] transform hover:-translate-y-1 transition-all duration-300"
+          className="relative z-10 inline-flex items-center space-x-2 bg-slate-900 text-white px-10 py-4 rounded-full font-black text-xs uppercase tracking-widest shadow-2xl hover:bg-black transition-all duration-300"
         >
-          <Compass size={20} className={loadingNearby ? "animate-spin" : ""} />
+          <Compass size={18} className={loadingNearby ? "animate-spin" : ""} />
           <span>Discover Nearby Items</span>
-          <ArrowRight size={18} className="ml-2" />
+          <ArrowRight size={16} className="ml-2" />
         </button>
       </div>
 
@@ -172,39 +172,39 @@ export default function Home() {
             exit={{ opacity: 0, height: 0 }}
             className="overflow-hidden"
           >
-            <div className="glass-card rounded-[2rem] border border-blue-500/30 p-8 relative shadow-[0_0_40px_rgba(59,130,246,0.1)]">
-              <div className="flex flex-col md:flex-row md:items-center justify-between gap-4 mb-8 border-b border-white/10 pb-6">
-                <div>
-                  <h2 className="text-3xl font-extrabold text-white flex items-center gap-3">
-                    <MapPin className="text-blue-400" />
-                    Products Near You
-                  </h2>
+          <div className="glass-card rounded-[2rem] border border-slate-200 p-8 relative shadow-xl bg-white/70">
+            <div className="flex flex-col md:flex-row md:items-center justify-between gap-4 mb-8 border-b border-slate-100 pb-6">
+              <div>
+                <h2 className="text-3xl font-black text-slate-900 flex items-center gap-3 tracking-tight">
+                  <MapPin className="text-slate-900" />
+                  Nearby Items
+                </h2>
                   {locationError ? (
-                    <p className="text-red-400 text-sm mt-2 font-medium">{locationError}</p>
+                    <p className="text-red-600 text-sm mt-2 font-semibold font-medium">{locationError}</p>
                   ) : (
-                    <p className="text-white/50 text-sm mt-2">Discovering items within {distanceFilter} km of your current location</p>
+                    <p className="text-slate-500 text-sm mt-2 font-medium">Discovering items within {distanceFilter} km of your current location</p>
                   )}
                 </div>
                 
                 {/* Distance Filter specifically for Nearby */}
                 {!locationError && (
-                  <div className="flex items-center gap-3 bg-black/30 border border-white/10 rounded-2xl px-5 py-3 shadow-inner">
-                    <span className="text-sm font-bold text-white/70">Radius:</span>
+                  <div className="flex items-center gap-3 bg-slate-50 border border-slate-100 rounded-2xl px-5 py-3 shadow-inner">
+                    <span className="text-xs font-black text-slate-400 uppercase tracking-widest">Radius:</span>
                     <input 
                       type="range" 
                       min="1" max="50" 
                       value={distanceFilter} 
                       onChange={(e) => setDistanceFilter(Number(e.target.value))}
-                      className="w-32 accent-blue-500"
+                      className="w-32 accent-slate-900 cursor-pointer"
                     />
-                    <span className="text-sm font-black text-blue-400 min-w-[3rem] text-right">{distanceFilter} km</span>
+                    <span className="text-xs font-black text-slate-900 min-w-[3rem] text-right">{distanceFilter} km</span>
                   </div>
                 )}
               </div>
 
               {loadingNearby ? (
                 <div className="flex justify-center items-center py-20">
-                  <Loader2 className="w-12 h-12 text-blue-500 animate-spin" />
+                  <Loader2 className="w-12 h-12 text-slate-900 animate-spin" />
                 </div>
               ) : nearbyProducts.length > 0 ? (
                 <div className="flex overflow-x-auto gap-6 pb-6 px-2 custom-scrollbar snap-x">
@@ -219,10 +219,10 @@ export default function Home() {
                   ))}
                 </div>
               ) : (
-                <div className="text-center py-16 bg-white/5 rounded-2xl border border-white/10">
-                  <Compass className="w-16 h-16 text-white/20 mx-auto mb-4" />
-                  <p className="text-white/60 text-lg font-medium">No products found within {distanceFilter} km.</p>
-                  <p className="text-white/40 text-sm mt-2">Try expanding your search radius!</p>
+                <div className="text-center py-16 bg-slate-50/50 rounded-2xl border border-slate-100">
+                  <Compass className="w-16 h-16 text-slate-200 mx-auto mb-4" />
+                  <p className="text-slate-500 text-lg font-bold">No products found within {distanceFilter} km.</p>
+                  <p className="text-slate-400 text-sm mt-2 font-medium">Try expanding your search radius!</p>
                 </div>
               )}
             </div>
@@ -231,63 +231,63 @@ export default function Home() {
       </AnimatePresence>
 
       <div className="flex items-center gap-4 py-4">
-        <div className="h-px bg-white/10 flex-1"></div>
-        <h2 className="text-2xl font-bold text-white tracking-widest uppercase">Global Feed</h2>
-        <div className="h-px bg-white/10 flex-1"></div>
+        <div className="h-px bg-slate-200 flex-1"></div>
+        <h2 className="text-2xl font-bold text-slate-800 tracking-widest uppercase">Global Feed</h2>
+        <div className="h-px bg-slate-200 flex-1"></div>
       </div>
 
       {/* Filters Bar */}
-      <div className="glass-card p-4 flex flex-col md:flex-row gap-4 items-center justify-between rounded-2xl sticky top-24 z-40 shadow-[0_10px_30px_rgba(0,0,0,0.5)] border border-white/10 backdrop-blur-xl">
+      <div className="glass-card p-4 flex flex-col md:flex-row gap-4 items-center justify-between rounded-2xl sticky top-24 z-40 shadow-xl border border-slate-200 backdrop-blur-xl bg-white/80">
         <div className="relative w-full md:w-96 group">
-          <div className="absolute inset-y-0 left-4 flex items-center pointer-events-none text-white/40 group-focus-within:text-blue-400 transition-colors">
+          <div className="absolute inset-y-0 left-4 flex items-center pointer-events-none text-slate-400 group-focus-within:text-slate-900 transition-colors">
             <Search size={18} />
           </div>
           <input
             type="text"
             placeholder="Search products..."
-            className="w-full pl-12 pr-4 py-3 bg-black/30 border border-white/10 rounded-xl focus:outline-none focus:ring-2 focus:ring-blue-500/50 focus:border-blue-500/50 transition-all font-medium text-white placeholder-white/30 shadow-inner"
+            className="w-full pl-12 pr-4 py-3 bg-slate-50 border border-slate-100 rounded-2xl focus:outline-none focus:ring-4 focus:ring-slate-900/5 focus:border-slate-300 transition-all font-medium text-slate-800 placeholder-slate-400"
             value={searchQuery}
             onChange={(e) => setSearchQuery(e.target.value)}
           />
         </div>
 
         <div className="flex gap-4 w-full md:w-auto overflow-x-auto pb-2 md:pb-0 custom-scrollbar">
-          <div className="flex items-center space-x-2 bg-black/30 border border-white/10 rounded-xl px-4 py-2 flex-grow sm:flex-grow-0 min-w-max">
-            <Filter size={16} className="text-purple-400" />
+          <div className="flex items-center space-x-2 bg-slate-50 border border-slate-100 rounded-2xl px-4 py-2 flex-grow sm:flex-grow-0 min-w-max">
+            <Filter size={16} className="text-slate-400" />
             <select 
-              className="bg-transparent border-none focus:ring-0 text-sm font-bold w-full text-white/80 outline-none p-1 cursor-pointer appearance-none"
+              className="bg-transparent border-none focus:ring-0 text-sm font-bold w-full text-slate-700 outline-none p-1 cursor-pointer appearance-none"
               value={categoryFilter}
               onChange={(e) => setCategoryFilter(e.target.value)}
             >
-              <option value="" className="bg-slate-900">All Categories</option>
+              <option value="" className="bg-white">All Categories</option>
               {categories.slice(1).map(cat => (
-                <option key={cat} value={cat} className="bg-slate-900 capitalize">{cat}</option>
+                <option key={cat} value={cat} className="bg-white capitalize">{cat}</option>
               ))}
             </select>
           </div>
 
-          <div className="flex items-center space-x-2 bg-black/30 border border-white/10 rounded-xl px-4 py-2 flex-grow sm:flex-grow-0 min-w-max">
+          <div className="flex items-center space-x-2 bg-slate-50 border border-slate-200 rounded-xl px-4 py-2 flex-grow sm:flex-grow-0 min-w-max">
             <select 
-              className="bg-transparent border-none focus:ring-0 text-sm font-bold w-full text-white/80 outline-none p-1 cursor-pointer appearance-none"
+              className="bg-transparent border-none focus:ring-0 text-sm font-bold w-full text-slate-700 outline-none p-1 cursor-pointer appearance-none"
               value={conditionFilter}
               onChange={(e) => setConditionFilter(e.target.value)}
             >
-              <option value="" className="bg-slate-900">All Conditions</option>
-              <option value="New" className="bg-slate-900">New</option>
-              <option value="Like New" className="bg-slate-900">Like New</option>
-              <option value="Good" className="bg-slate-900">Good</option>
-              <option value="Fair" className="bg-slate-900">Fair</option>
-              <option value="Poor" className="bg-slate-900">Poor</option>
+              <option value="" className="bg-white">All Conditions</option>
+              <option value="New" className="bg-white">New</option>
+              <option value="Like New" className="bg-white">Like New</option>
+              <option value="Good" className="bg-white">Good</option>
+              <option value="Fair" className="bg-white">Fair</option>
+              <option value="Poor" className="bg-white">Poor</option>
             </select>
           </div>
           
           <select 
-            className="bg-blue-900/40 border border-blue-500/30 rounded-xl px-5 py-3 text-sm font-bold text-blue-200 outline-none focus:ring-2 focus:ring-blue-400 appearance-none min-w-max cursor-pointer"
+            className="bg-slate-900 border border-slate-900 rounded-2xl px-6 py-3 text-[10px] font-black text-white uppercase tracking-widest outline-none focus:ring-4 focus:ring-slate-900/10 appearance-none min-w-max cursor-pointer shadow-lg"
             value={sortOrder}
             onChange={(e) => setSortOrder(e.target.value)}
           >
-            <option value="newest" className="bg-slate-900">Newest first</option>
-            <option value="oldest" className="bg-slate-900">Oldest first</option>
+            <option value="newest" className="bg-white text-slate-900">Newest first</option>
+            <option value="oldest" className="bg-white text-slate-900">Oldest first</option>
           </select>
         </div>
       </div>
@@ -295,7 +295,7 @@ export default function Home() {
       {/* Grid */}
       {loading ? (
         <div className="flex justify-center items-center py-32">
-          <Loader2 className="w-12 h-12 text-blue-500 animate-spin" />
+          <Loader2 className="w-12 h-12 text-slate-900 animate-spin" />
         </div>
       ) : products.length > 0 ? (
         <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-8">
@@ -309,12 +309,12 @@ export default function Home() {
           ))}
         </div>
       ) : (
-        <div className="text-center py-32 bg-white/5 rounded-[2rem] border border-white/10 shadow-sm backdrop-blur-sm">
-          <Search className="w-16 h-16 text-white/20 mx-auto mb-6" />
-          <p className="text-white/60 text-xl font-medium">No products match your criteria.</p>
+        <div className="text-center py-32 bg-white/70 rounded-[2rem] border border-slate-200 shadow-sm backdrop-blur-sm">
+          <Search className="w-16 h-16 text-slate-200 mx-auto mb-6" />
+          <p className="text-slate-500 text-xl font-bold">No products match your criteria.</p>
           <button 
             onClick={() => { setSearchQuery(''); setCategoryFilter(''); setConditionFilter(''); }}
-            className="mt-6 inline-block bg-white/10 border border-white/20 hover:bg-white/20 text-white font-bold py-2 px-6 rounded-full transition-all"
+            className="mt-6 inline-block bg-slate-100 border border-slate-200 hover:bg-slate-200 text-slate-700 font-bold py-2 px-8 rounded-full transition-all shadow-sm"
           >
             Clear Search
           </button>
