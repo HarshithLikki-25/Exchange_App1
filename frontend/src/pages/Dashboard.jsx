@@ -3,7 +3,7 @@ import { motion } from 'framer-motion';
 import api from '../services/api';
 import { useAuth } from '../context/AuthContext';
 import ProductCard from '../components/ProductCard';
-import { User, Package, MessageSquare, Loader2, Calendar, Check, X, MapPin, CalendarClock, Info } from 'lucide-react';
+import { User, Package, MessageSquare, Loader2, Calendar, Check, X, MapPin, CalendarClock, Info, Tag } from 'lucide-react';
 import { Helmet } from 'react-helmet-async';
 
 export default function Dashboard() {
