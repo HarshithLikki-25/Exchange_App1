@@ -7,6 +7,7 @@ import {
   MapPin, Loader2, Tag, Clock, Package, Zap, Users
 } from 'lucide-react';
 import api from '../services/api';
+import { useAuth } from '../context/AuthContext';
 
 /* ─── Public Product Card (dark theme) ─── */
 function PublicProductCard({ product }) {
@@ -73,6 +74,7 @@ export default function Landing() {
   const [categoryFilter, setCategoryFilter] = useState('');
   const [conditionFilter, setConditionFilter] = useState('');
   const [sortOrder, setSortOrder] = useState('newest');
+  const { user } = useAuth();
 
   const fetchProducts = async () => {
     setLoading(true);
@@ -128,9 +130,15 @@ export default function Landing() {
               CampusXchange connects college students to buy, sell, and exchange items — safely, locally, and for free.
             </p>
             <div className="flex flex-col sm:flex-row justify-center gap-4">
-              <Link to="/register" className="inline-flex items-center justify-center gap-2 px-8 py-4 bg-gradient-to-r from-blue-500 to-purple-500 rounded-2xl font-bold text-lg shadow-2xl shadow-blue-500/30 hover:scale-105 transition-transform duration-200">
-                Start Trading <ArrowRight size={20} />
-              </Link>
+              {user ? (
+                <Link to="/market" className="inline-flex items-center justify-center gap-2 px-8 py-4 bg-gradient-to-r from-blue-500 to-purple-500 rounded-2xl font-bold text-lg shadow-2xl shadow-blue-500/30 hover:scale-105 transition-transform duration-200">
+                  Go to Market <ArrowRight size={20} />
+                </Link>
+              ) : (
+                <Link to="/register" className="inline-flex items-center justify-center gap-2 px-8 py-4 bg-gradient-to-r from-blue-500 to-purple-500 rounded-2xl font-bold text-lg shadow-2xl shadow-blue-500/30 hover:scale-105 transition-transform duration-200">
+                  Start Trading <ArrowRight size={20} />
+                </Link>
+              )}
               <a href="#marketplace" className="inline-flex items-center justify-center gap-2 px-8 py-4 bg-white/10 border border-white/20 backdrop-blur-sm rounded-2xl font-bold text-lg hover:bg-white/20 transition-colors duration-200">
                 Browse Items <Package size={20} />
               </a>
@@ -229,18 +237,20 @@ export default function Landing() {
               ))}
             </div>
             {/* CTA */}
-            <div className="mt-12 text-center bg-white/5 border border-white/10 backdrop-blur-sm rounded-3xl p-10">
-              <h3 className="text-2xl font-extrabold text-white mb-2">Want to post your own items?</h3>
-              <p className="text-white/50 mb-6">Create a free account and start trading with students near you.</p>
-              <div className="flex justify-center gap-4">
-                <Link to="/register" className="px-7 py-3 bg-gradient-to-r from-blue-500 to-purple-500 text-white rounded-xl font-bold shadow-lg hover:scale-105 transition-transform">
-                  Sign Up Free
-                </Link>
-                <Link to="/login" className="px-7 py-3 text-white/80 bg-white/5 border border-white/20 rounded-xl font-bold hover:bg-white/10 transition-colors">
-                  Log In
-                </Link>
+            {!user && (
+              <div className="mt-12 text-center bg-white/5 border border-white/10 backdrop-blur-sm rounded-3xl p-10">
+                <h3 className="text-2xl font-extrabold text-white mb-2">Want to post your own items?</h3>
+                <p className="text-white/50 mb-6">Create a free account and start trading with students near you.</p>
+                <div className="flex justify-center gap-4">
+                  <Link to="/register" className="px-7 py-3 bg-gradient-to-r from-blue-500 to-purple-500 text-white rounded-xl font-bold shadow-lg hover:scale-105 transition-transform">
+                    Sign Up Free
+                  </Link>
+                  <Link to="/login" className="px-7 py-3 text-white/80 bg-white/5 border border-white/20 rounded-xl font-bold hover:bg-white/10 transition-colors">
+                    Log In
+                  </Link>
+                </div>
               </div>
-            </div>
+            )}
           </>
         ) : (
           <div className="text-center py-24 bg-white/5 border border-white/10 rounded-3xl">
@@ -261,31 +271,33 @@ export default function Landing() {
       </section>
 
       {/* ── WHY SECTION ── */}
-      <section className="relative py-20 px-6">
-        <div className="w-full h-px bg-gradient-to-r from-transparent via-white/10 to-transparent mb-20 max-w-7xl mx-auto" />
-        <div className="max-w-6xl mx-auto">
-          <div className="text-center mb-12">
-            <h2 className="text-3xl md:text-4xl font-extrabold text-white mb-3">Why CampusXchange?</h2>
-            <p className="text-white/40 max-w-xl mx-auto">Designed for college students — safe, local, and completely free.</p>
+      {!user && (
+        <section className="relative py-20 px-6">
+          <div className="w-full h-px bg-gradient-to-r from-transparent via-white/10 to-transparent mb-20 max-w-7xl mx-auto" />
+          <div className="max-w-6xl mx-auto">
+            <div className="text-center mb-12">
+              <h2 className="text-3xl md:text-4xl font-extrabold text-white mb-3">Why CampusXchange?</h2>
+              <p className="text-white/40 max-w-xl mx-auto">Designed for college students — safe, local, and completely free.</p>
+            </div>
+            <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
+              {[
+                { icon: <ShieldCheck size={28} />, title: 'Safe & Verified', desc: 'Only verified students can join and interact on the platform.' },
+                { icon: <MapPin size={28} />, title: 'Local & Fast', desc: 'Meet between classes — no shipping fees, no waiting.' },
+                { icon: <RefreshCcw size={28} />, title: 'Eco-Friendly', desc: 'Give items a second life and reduce campus waste.' },
+              ].map(({ icon, title, desc }) => (
+                <motion.div key={title} whileHover={{ y: -6 }}
+                  className="p-8 rounded-3xl border border-white/10 bg-white/5 backdrop-blur-sm hover:bg-white/10 hover:border-white/20 hover:shadow-xl hover:shadow-blue-500/10 transition-all duration-300 group cursor-default">
+                  <div className="w-14 h-14 rounded-2xl bg-blue-500/10 border border-blue-400/20 text-blue-300 flex items-center justify-center mb-5 group-hover:bg-gradient-to-br group-hover:from-blue-500 group-hover:to-purple-500 group-hover:text-white group-hover:border-transparent transition-all duration-300">
+                    {icon}
+                  </div>
+                  <h3 className="text-xl font-bold text-white mb-2">{title}</h3>
+                  <p className="text-white/40 leading-relaxed">{desc}</p>
+                </motion.div>
+              ))}
+            </div>
           </div>
-          <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
-            {[
-              { icon: <ShieldCheck size={28} />, title: 'Safe & Verified', desc: 'Only verified students can join and interact on the platform.' },
-              { icon: <MapPin size={28} />, title: 'Local & Fast', desc: 'Meet between classes — no shipping fees, no waiting.' },
-              { icon: <RefreshCcw size={28} />, title: 'Eco-Friendly', desc: 'Give items a second life and reduce campus waste.' },
-            ].map(({ icon, title, desc }) => (
-              <motion.div key={title} whileHover={{ y: -6 }}
-                className="p-8 rounded-3xl border border-white/10 bg-white/5 backdrop-blur-sm hover:bg-white/10 hover:border-white/20 hover:shadow-xl hover:shadow-blue-500/10 transition-all duration-300 group cursor-default">
-                <div className="w-14 h-14 rounded-2xl bg-blue-500/10 border border-blue-400/20 text-blue-300 flex items-center justify-center mb-5 group-hover:bg-gradient-to-br group-hover:from-blue-500 group-hover:to-purple-500 group-hover:text-white group-hover:border-transparent transition-all duration-300">
-                  {icon}
-                </div>
-                <h3 className="text-xl font-bold text-white mb-2">{title}</h3>
-                <p className="text-white/40 leading-relaxed">{desc}</p>
-              </motion.div>
-            ))}
-          </div>
-        </div>
-      </section>
+        </section>
+      )}
 
       {/* ── FOOTER ── */}
       <footer className="relative border-t border-white/10 py-10 px-6 mt-8">

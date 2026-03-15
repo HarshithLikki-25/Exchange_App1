@@ -2,19 +2,38 @@ import React, { useState, useEffect, useRef } from 'react';
 import { useParams } from 'react-router-dom';
 import api from '../services/api';
 import { useAuth } from '../context/AuthContext';
-import { Loader2, MapPin, Calendar, Camera, User as UserIcon } from 'lucide-react';
+import { Loader2, MapPin, Calendar, Camera, User as UserIcon, Edit2, Check, X } from 'lucide-react';
 import { Helmet } from 'react-helmet-async';
 
 export default function Profile() {
   const { id } = useParams();
-  const { user: currentUser } = useAuth();
+  const { user: currentUser, setUser } = useAuth();
   const [profileUser, setProfileUser] = useState(null);
   const [products, setProducts] = useState([]);
   const [loading, setLoading] = useState(true);
   const [uploading, setUploading] = useState(false);
   const fileInputRef = useRef(null);
 
+  const [editingBio, setEditingBio] = useState(false);
+  const [newBio, setNewBio] = useState('');
+  const [savingBio, setSavingBio] = useState(false);
+
   const isOwner = currentUser?.id === parseInt(id);
+
+  const handleSaveBio = async () => {
+    setSavingBio(true);
+    try {
+      const res = await api.patch('/users/me', { bio: newBio });
+      setProfileUser(res.data);
+      if (isOwner) setUser(res.data);
+      setEditingBio(false);
+    } catch (err) {
+      console.error("Failed to update bio", err);
+      alert("Failed to update bio");
+    } finally {
+      setSavingBio(false);
+    }
+  };
 
   useEffect(() => {
     const fetchProfile = async () => {
@@ -23,6 +42,7 @@ export default function Profile() {
           api.get(`/users/${id}`)
         ]);
         setProfileUser(userRes.data);
+        setNewBio(userRes.data.bio || '');
         
         if (isOwner) {
             const myProdRes = await api.get('/users/me/products');
@@ -52,7 +72,8 @@ export default function Profile() {
       const res = await api.post('/users/profile-image', formData, {
         headers: { 'Content-Type': 'multipart/form-data' }
       });
-      setProfileUser({ ...profileUser, profile_image_url: res.data.profile_image_url });
+      setProfileUser(res.data);
+      if (isOwner) setUser(res.data);
     } catch (err) {
       console.error("Upload failed", err);
       alert("Failed to upload profile image.");
@@ -105,9 +126,50 @@ export default function Profile() {
             <span className="flex items-center bg-white/5 py-1.5 px-3 rounded-lg border border-white/10"><Calendar className="w-4 h-4 mr-2 text-green-400"/> Joined {new Date(profileUser.created_at).toLocaleDateString()}</span>
           </div>
 
-          <p className="text-white/80 max-w-2xl bg-black/20 p-5 rounded-2xl border border-white/5 shadow-inner leading-relaxed">
-            {profileUser.bio || "This user hasn't written a bio yet."}
-          </p>
+          {editingBio ? (
+            <div className="max-w-2xl w-full">
+              <textarea
+                value={newBio}
+                onChange={(e) => setNewBio(e.target.value)}
+                className="w-full bg-black/30 text-white border border-blue-500/50 p-4 rounded-xl focus:ring-2 focus:ring-blue-500 focus:outline-none placeholder-white/40"
+                rows={3}
+                placeholder="Write something about yourself..."
+                disabled={savingBio}
+              />
+              <div className="flex justify-end gap-2 mt-2">
+                <button
+                  onClick={() => { setEditingBio(false); setNewBio(profileUser.bio || ''); }}
+                  className="px-4 py-2 rounded-lg bg-white/5 text-white/70 hover:bg-white/10 hover:text-white transition-colors flex items-center gap-2 font-medium"
+                  disabled={savingBio}
+                >
+                  <X className="w-4 h-4" /> Cancel
+                </button>
+                <button
+                  onClick={handleSaveBio}
+                  className="px-4 py-2 rounded-lg bg-blue-600 text-white hover:bg-blue-500 transition-colors shadow-[0_0_15px_rgba(37,99,235,0.4)] flex items-center gap-2 font-bold"
+                  disabled={savingBio}
+                >
+                  {savingBio ? <Loader2 className="w-4 h-4 animate-spin" /> : <Check className="w-4 h-4" />}
+                  Save
+                </button>
+              </div>
+            </div>
+          ) : (
+            <div className="max-w-2xl relative group w-full md:w-auto">
+              <p className="text-white/80 w-full bg-black/20 p-5 rounded-2xl border border-white/5 shadow-inner leading-relaxed min-h-[5rem]">
+                {profileUser.bio || "This user hasn't written a bio yet."}
+              </p>
+              {isOwner && (
+                <button
+                  onClick={() => { setEditingBio(true); setNewBio(profileUser.bio || ''); }}
+                  className="absolute top-3 right-3 p-2 bg-white/5 hover:bg-white/20 text-white/50 hover:text-white rounded-lg opacity-0 sm:opacity-0 group-hover:opacity-100 transition-all border border-white/10 backdrop-blur-md"
+                  title="Edit Bio"
+                >
+                  <Edit2 className="w-4 h-4" />
+                </button>
+              )}
+            </div>
+          )}
 
           <div className="flex gap-10 pt-4 justify-center md:justify-start">
             <div className="text-center bg-white/5 px-6 py-3 rounded-2xl border border-white/10">

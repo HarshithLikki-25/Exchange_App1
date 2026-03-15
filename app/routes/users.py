@@ -25,6 +25,23 @@ def read_user_profile(current_user: User = Depends(get_current_user)):
     return get_user_profile(current_user)
 
 
+from app.schemas.user import UserUpdate
+
+@router.patch("/me", response_model=UserOut)
+def update_user_profile(
+    user_update: UserUpdate,
+    db: Session = Depends(get_db),
+    current_user: User = Depends(get_current_user)
+):
+    """Update the currently authenticated user's profile information."""
+    update_data = user_update.model_dump(exclude_unset=True)
+    for field, value in update_data.items():
+        setattr(current_user, field, value)
+    db.commit()
+    db.refresh(current_user)
+    return current_user
+
+
 from app.utils.cloudinary_upload import upload_image
 
 @router.post("/profile-image", response_model=UserOut)

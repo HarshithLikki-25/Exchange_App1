@@ -28,10 +28,15 @@ def register_user(db: Session, user_data: UserCreate) -> User:
 
 def login_user(db: Session, email: str, password: str) -> str:
     user = db.query(User).filter(User.email == email).first()
-    if not user or not verify_password(password, user.password):
+    if not user:
+        raise HTTPException(
+            status_code=status.HTTP_404_NOT_FOUND,
+            detail="User not found"
+        )
+    if not verify_password(password, user.password):
         raise HTTPException(
             status_code=status.HTTP_401_UNAUTHORIZED,
-            detail="Invalid email or password"
+            detail="Incorrect password"
         )
     token = create_access_token(data={"sub": str(user.id)})
     return token
