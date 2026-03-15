@@ -6,10 +6,8 @@ import os
 # Import all models to ensure they are registered with SQLAlchemy before table creation
 from app.models import User, Product, ExchangeRequest, Favorite, ExchangeSchedule  # noqa: F401
 from app.database import engine, Base
+# Include routers
 from app.routes import auth, products, exchange_requests, exchange_schedules, favorites, notifications, messages, users
-
-# Create all database tables on startup
-Base.metadata.create_all(bind=engine)
 
 app = FastAPI(
     title="Exchange App API",
@@ -55,6 +53,13 @@ def startup_event():
     db_url = str(os.getenv("DATABASE_URL", "sqlite"))
     print(f"Backend started. Database: {db_url[:15]}...")
     
+    # Create all database tables on startup
+    try:
+        Base.metadata.create_all(bind=engine)
+        print("Database tables synchronized.")
+    except Exception as e:
+        print(f"Warning: Table creation error: {e}")
+
     # Safety Check: Ensure 'proposed_by_id' column exists in exchange_schedules
     # This prevents 500 errors if the table was created before the column was added
     try:

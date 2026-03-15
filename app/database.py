@@ -5,7 +5,7 @@ import os
 
 load_dotenv()
 
-DATABASE_URL = os.getenv("DATABASE_URL", "sqlite:///./exchange.db")
+DATABASE_URL = os.getenv("DATABASE_URL", "sqlite:///./exchange.db").strip()
 
 # Fix for Render providing postgres:// URLs instead of postgresql://
 if DATABASE_URL and DATABASE_URL.startswith("postgres://"):
