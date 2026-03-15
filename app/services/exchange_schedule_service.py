@@ -1,0 +1,51 @@
+from sqlalchemy.orm import Session
+from fastapi import HTTPException
+from app.models.exchange_schedule import ExchangeSchedule
+from app.models.exchange_request import ExchangeRequest
+from app.models.product import Product
+from app.models.user import User
+from app.schemas.exchange_schedule import ExchangeScheduleCreate
+from app.services.notification_service import create_notification
+
+
+def create_exchange_schedule(db: Session, schedule_in: ExchangeScheduleCreate, user_id: int) -> ExchangeSchedule:
+    # Verify the exchange request exists and is accepted
+    req = db.query(ExchangeRequest).filter(ExchangeRequest.id == schedule_in.exchange_request_id).first()
+    if not req:
+        raise HTTPException(status_code=404, detail="Exchange request not found")
+        
+    if req.status != "accepted":
+        raise HTTPException(status_code=400, detail="Cannot schedule an exchange that has not been accepted")
+        
+    # Verify the user is either the requester or the original owner
+    product = db.query(Product).filter(Product.id == req.product_id).first()
+    if user_id != req.requested_by and user_id != product.owner_id:
+        raise HTTPException(status_code=403, detail="You are not authorized to schedule this exchange")
+        
+    # Check if a schedule already exists
+    existing = db.query(ExchangeSchedule).filter(ExchangeSchedule.exchange_request_id == req.id).first()
+    if existing:
+        raise HTTPException(status_code=400, detail="Schedule already exists for this exchange")
+        
+    schedule = ExchangeSchedule(
+        exchange_request_id=req.id,
+        pickup_or_delivery=schedule_in.pickup_or_delivery,
+        location=schedule_in.location,
+        date=schedule_in.date,
+        time_slot=schedule_in.time_slot
+    )
+    db.add(schedule)
+    db.commit()
+    db.refresh(schedule)
+    
+    # Notify the other party
+    other_party = req.requested_by if user_id == product.owner_id else product.owner_id
+    create_notification(
+        db=db,
+        user_id=other_party,
+        type="exchange_scheduled",
+        message=f"Pickup scheduled for '{product.title}' at {schedule.location} on {schedule.date} ({schedule.time_slot}).",
+        related_id=schedule.id
+    )
+    
+    return schedule
