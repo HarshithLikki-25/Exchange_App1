@@ -101,16 +101,16 @@ export default function Landing() {
   const hasActiveFilters = searchQuery || categoryFilter || conditionFilter;
 
   return (
-    <div className="min-h-screen font-sans" style={{ background: 'linear-gradient(135deg, #f8fafc 0%, #f1f5f9 40%, #e2e8f0 100%)' }}>
+    <div className="min-h-screen font-sans">
       <Helmet>
         <title>CampusXchange | College Marketplace</title>
         <meta name="description" content="Buy, sell and exchange items with students on your campus." />
       </Helmet>
 
       {/* decorative blobs — full page */}
-      <div className="fixed top-0 right-0 w-[700px] h-[700px] bg-slate-200/20 rounded-full blur-3xl -translate-y-1/2 translate-x-1/3 pointer-events-none" />
-      <div className="fixed bottom-0 left-0 w-[500px] h-[500px] bg-slate-300/10 rounded-full blur-3xl translate-y-1/3 -translate-x-1/4 pointer-events-none" />
-      <div className="fixed top-1/2 left-1/2 w-[600px] h-[300px] bg-slate-100/5 rounded-full blur-3xl -translate-x-1/2 pointer-events-none" />
+      <div className="fixed top-0 right-0 w-[800px] h-[800px] bg-neutral-200/5 rounded-full blur-[120px] -translate-y-1/2 translate-x-1/3 pointer-events-none" />
+      <div className="fixed bottom-0 left-0 w-[600px] h-[600px] bg-neutral-100/3 rounded-full blur-[100px] translate-y-1/3 -translate-x-1/4 pointer-events-none" />
+      <div className="fixed top-1/2 left-1/2 w-[700px] h-[400px] bg-neutral-50/2 rounded-full blur-[100px] -translate-x-1/2 pointer-events-none" />
       {/* dot grid overlay */}
       <div className="fixed inset-0 opacity-[0.03] pointer-events-none" style={{ backgroundImage: 'radial-gradient(circle, #000000 1px, transparent 1px)', backgroundSize: '32px 32px' }} />
 
@@ -242,9 +242,9 @@ export default function Landing() {
                 <h3 className="text-2xl font-extrabold text-slate-900 mb-2">Want to post your own items?</h3>
                 <p className="text-slate-500 mb-6 font-medium">Create a free account and start trading with students near you.</p>
                 <div className="flex justify-center gap-4">
-                  <Link to="/register" className="px-7 py-3 bg-gradient-to-r from-blue-600 to-indigo-600 text-white rounded-xl font-bold shadow-lg hover:scale-105 transition-transform">
-                    Sign Up Free
-                  </Link>
+                    <Link to="/register" className="px-10 py-4 bg-slate-900 text-white rounded-[2rem] font-black uppercase tracking-widest text-[11px] shadow-2xl hover:bg-black transition-all">
+                      Sign Up Free
+                    </Link>
                   <Link to="/login" className="px-7 py-3 text-slate-700 bg-slate-50 border border-slate-200 rounded-xl font-bold hover:bg-slate-100 transition-colors">
                     Log In
                   </Link>

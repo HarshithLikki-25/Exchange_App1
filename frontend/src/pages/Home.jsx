@@ -142,8 +142,8 @@ export default function Home() {
       {/* Hero Header */}
       <div className="text-center py-16 px-4 rounded-3xl bg-white/60 backdrop-blur-md border border-slate-200 shadow-xl relative overflow-hidden">
         <div className="absolute top-0 left-0 w-full h-full bg-[url('https://www.transparenttextures.com/patterns/cubes.png')] opacity-5 mix-blend-overlay"></div>
-        <div className="absolute -top-40 -right-40 w-96 h-96 bg-slate-100 blur-3xl rounded-full pointer-events-none"></div>
-        <div className="absolute -bottom-40 -left-40 w-96 h-96 bg-slate-50 blur-3xl rounded-full pointer-events-none"></div>
+        <div className="absolute -top-40 -right-40 w-96 h-96 bg-neutral-100/20 blur-[100px] rounded-full pointer-events-none"></div>
+        <div className="absolute -bottom-40 -left-40 w-96 h-96 bg-neutral-50/10 blur-[100px] rounded-full pointer-events-none"></div>
         
         <h1 className="text-4xl md:text-6xl font-black text-slate-900 mb-6 relative z-10 tracking-tighter lowercase">
           campus marketplace
@@ -230,10 +230,10 @@ export default function Home() {
         )}
       </AnimatePresence>
 
-      <div className="flex items-center gap-4 py-4">
-        <div className="h-px bg-slate-200 flex-1"></div>
-        <h2 className="text-2xl font-bold text-slate-800 tracking-widest uppercase">Global Feed</h2>
-        <div className="h-px bg-slate-200 flex-1"></div>
+      <div className="flex items-center gap-6 py-6 opacity-30">
+        <div className="h-px bg-neutral-900 flex-1"></div>
+        <h2 className="text-xl font-black text-neutral-900 tracking-[0.5em] uppercase">feed</h2>
+        <div className="h-px bg-neutral-900 flex-1"></div>
       </div>
 
       {/* Filters Bar */}
@@ -282,7 +282,7 @@ export default function Home() {
           </div>
           
           <select 
-            className="bg-slate-900 border border-slate-900 rounded-2xl px-6 py-3 text-[10px] font-black text-white uppercase tracking-widest outline-none focus:ring-4 focus:ring-slate-900/10 appearance-none min-w-max cursor-pointer shadow-lg"
+            className="bg-neutral-900 border border-neutral-900 rounded-2xl px-8 py-4 text-[10px] font-black text-white uppercase tracking-widest outline-none transition-all appearance-none min-w-max cursor-pointer shadow-2xl"
             value={sortOrder}
             onChange={(e) => setSortOrder(e.target.value)}
           >

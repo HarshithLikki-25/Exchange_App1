@@ -3,7 +3,7 @@ import { motion } from 'framer-motion';
 import api from '../services/api';
 import { useAuth } from '../context/AuthContext';
 import ProductCard from '../components/ProductCard';
-import { User, Package, MessageSquare, Loader2, Calendar, Check, X, MapPin, CalendarClock, Info, Tag } from 'lucide-react';
+import { User, Package, MessageSquare, Loader2, Calendar, Check, X, MapPin, CalendarClock, Info, Tag, GraduationCap } from 'lucide-react';
 import { Helmet } from 'react-helmet-async';
 
 export default function Dashboard() {
@@ -283,23 +283,23 @@ export default function Dashboard() {
                   <div className="flex flex-col sm:flex-row justify-between sm:items-center gap-6">
                     <div className="flex-1">
                       <h4 className="font-black text-slate-900 text-xl mb-4 flex items-center gap-3">
-                        <CalendarClock size={24} className="text-blue-600"/> 
+                        <CalendarClock size={24} className="text-slate-900"/> 
                         Meetup for Request #{schedule.exchange_request_id}
                       </h4>
                       
                       <div className="grid grid-cols-1 sm:grid-cols-3 gap-4 text-sm mt-6 bg-slate-50/50 p-6 rounded-2xl border border-slate-100 shadow-inner">
                         <div>
-                          <div className="text-slate-400 mb-1 font-black uppercase text-[10px] tracking-widest flex items-center"><MapPin size={12} className="mr-1 text-blue-600"/> Location</div>
+                          <div className="text-slate-400 mb-1 font-black uppercase text-[10px] tracking-widest flex items-center"><MapPin size={12} className="mr-1 text-slate-900"/> Location</div>
                           <div className="text-slate-800 font-black">{schedule.location}</div>
                         </div>
                         
                         <div>
-                          <div className="text-slate-400 mb-1 font-black uppercase text-[10px] tracking-widest flex items-center"><Calendar size={12} className="mr-1 text-indigo-600"/> Date & Time</div>
+                          <div className="text-slate-400 mb-1 font-black uppercase text-[10px] tracking-widest flex items-center"><Calendar size={12} className="mr-1 text-slate-900"/> Date & Time</div>
                           <div className="text-slate-800 font-black">{schedule.date} @ {schedule.time_slot}</div>
                         </div>
                         
                         <div>
-                          <div className="text-slate-400 mb-1 font-black uppercase text-[10px] tracking-widest flex items-center"><Package size={12} className="mr-1 text-blue-400"/> Method</div>
+                          <div className="text-slate-400 mb-1 font-black uppercase text-[10px] tracking-widest flex items-center"><Package size={12} className="mr-1 text-slate-400"/> Method</div>
                           <div className="text-slate-800 font-black capitalize">{schedule.pickup_or_delivery}</div>
                         </div>
                       </div>

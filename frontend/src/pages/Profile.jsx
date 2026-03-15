@@ -132,7 +132,7 @@ export default function Profile() {
               <textarea
                 value={newBio}
                 onChange={(e) => setNewBio(e.target.value)}
-                className="w-full bg-slate-50 text-slate-800 border border-slate-200 p-5 rounded-2xl focus:ring-2 focus:ring-blue-500/20 focus:border-blue-500 outline-none placeholder-slate-400 font-medium shadow-inner"
+                className="w-full bg-slate-50 text-slate-800 border border-slate-200 p-5 rounded-2xl focus:ring-4 focus:ring-slate-900/5 focus:border-slate-300 outline-none placeholder-slate-400 font-medium shadow-inner"
                 rows={3}
                 placeholder="Write something about yourself..."
                 disabled={savingBio}

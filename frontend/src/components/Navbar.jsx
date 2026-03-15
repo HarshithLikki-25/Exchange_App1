@@ -110,7 +110,7 @@ export default function Navbar() {
   );
 
   return (
-    <nav className="fixed top-4 left-1/2 -translate-x-1/2 w-[95%] max-w-7xl bg-white/60 backdrop-blur-md rounded-full border border-slate-200 shadow-lg shadow-blue-500/5 z-50">
+    <nav className="fixed top-4 left-1/2 -translate-x-1/2 w-[95%] max-w-7xl bg-white/60 backdrop-blur-md rounded-full border border-slate-200 shadow-2xl shadow-neutral-900/5 z-50">
       <div className="px-6 py-3">
         <div className="flex justify-between items-center transition-all">
           <Link to="/" onClick={() => setNotifOpen(false)} className="flex items-center space-x-2 text-xl font-black text-slate-900 hover:scale-105 transition-transform origin-left lowercase tracking-tighter">
@@ -129,7 +129,7 @@ export default function Navbar() {
                 <NavLink to="/dashboard" icon={LayoutDashboard} text="Dashboard" />
                 
                 <div className="flex items-center space-x-4 ml-4 border-l pl-4 border-white/20">
-                  <Link to={`/profile/${user.id}`} className="text-white/70 hover:text-blue-400 font-medium">Profile</Link>
+                  <Link to={`/profile/${user.id}`} className="text-slate-400 hover:text-slate-900 font-black uppercase tracking-widest text-[10px] transition-colors">Profile</Link>
                   
                   {/* Notification Dropdown Container */}
                   <div className="relative" ref={notifRef}>
